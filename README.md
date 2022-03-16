@@ -29,8 +29,6 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [ ] Teste de Software
 - [ ] Conclusão do projeto
 
-Adicione comandos de execução e exemplos que você acha que os usuários acharão úteis. Fornece uma referência de opções para pontos de bônus!
-
 
 ## 🤝 Colaboradores
 
