@@ -44,7 +44,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
   <tr>
     <td align="center">
       <a href="#">
-        <img src="https://www.instagram.com/p/B4-uKtdhmww/" width="100px;" alt="Foto do DionatanLM no GitHub"/><br>
+        <img src="https://avatars3.githubusercontent.com/u/62453867" width="100px;" alt="Foto do DionatanLM no GitHub"/><br>
         <sub>
           <b>Dionatan de Lima</b>
         </sub>
@@ -52,7 +52,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
     </td>
     <td align="center">
       <a href="#">
-        <img src="https://www.instagram.com/p/CX4BevhlERo/" width="100px;" alt="Foto do Gabriel Ramos"/><br>
+        <img src="https://avatars3.githubusercontent.com/u/69884582" width="100px;" alt="Foto do Gabriel Ramos"/><br>
         <sub>
           <b>Gabriel Ramos</b>
         </sub>
