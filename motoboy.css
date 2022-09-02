@@ -124,15 +124,19 @@ body{
 }
 
 .home-text .text-h1{
-    font-size: 3rem;
+    font-size: 2.9rem;
     color: var(--dark);
     margin-bottom: 1rem;
     line-height: 4rem;
 }
 
+.home-text span{
+    color: var(--orange);
+}
+
 .home-text p{
     margin-bottom: 4rem;
-    font-size: 17px;
+    font-size: 20px;
 }
 .home-btn{
     display: inline-flex;
@@ -152,9 +156,13 @@ body{
     width: 30px;
 }
 
+.home-apps{
+    gap: px;
+}
+
 .home-img img{
-    margin-top: 100px;
-    width: 100%;
+    margin-top: 70px;
+    max-width: 700px;
 
 }
 
@@ -230,11 +238,12 @@ body{
     }
     /*main*/
     .home{
-        padding: 100px 2%;
+        padding: 100px 4%;
         flex-direction: column;
         text-align: center;
         overflow: hidden;
         gap: 5rem;
+        
     }
     .home .text-h4{
         margin-top: 80px;
@@ -248,9 +257,8 @@ body{
         font-size: 16px;
     }
     .home-img{
-        width: 120%;
-        height: 100%;
-        margin-top: -200px;
-        margin-left: 0px;
+        margin-top: -13em;
+        height: 700px;
+        justify-content: center;
     }
 }
