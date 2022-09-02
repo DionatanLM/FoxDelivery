@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-*{
+*, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,6 +8,8 @@
     list-style: none;
     text-decoration: none;
 }
+
+
 
 :root{
     --orange: #F58328;
@@ -159,11 +161,6 @@ body{
     width: 130%;
 
 }
-
-
-
-
-
 
 /*--------------------------------------------------------------*/
 @media (max-width: 785px){
