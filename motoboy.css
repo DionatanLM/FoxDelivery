@@ -135,20 +135,21 @@ body{
     font-size: 17px;
 }
 .home-btn{
+    display: inline-flex;
+    border: none;
     padding: 15px 45px;
     background: var(--orange);
     color: var(--white);
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.5s;
+    align-items: center;
 }
 .home-btn:hover{
     background: #ffa55c;
 }
 .home-btn i{
-       
-    align-items: center;
-    font-size: 1.5rem;
+    width: 30px;
 }
 
 .home-img img{
