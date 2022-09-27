@@ -1,7 +1,7 @@
 
 <!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
-<img src="bannerFox.jpg"  alt="exemplo imagem">
+<img src="src/bannerFox.jpg"  alt="exemplo imagem">
 
 > A Fox Delivery irá fornecer ao seu restaurante a facilidade de
 obter motoboys, a todo momento. A plataforma vai direcionar os entregadores que
