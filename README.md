@@ -7,6 +7,18 @@
 obter motoboys, a todo momento. A plataforma vai direcionar os entregadores que
 estiverem mais próximos para fazer a sua entrega com agilidade.
 
+## 🚀 Executar a aplicação
+Você precisará do Node.js instalado no seu computador para iniciar este aplicativo.
+
+```
+git clone https://github.com/DionatanLM/FoxDelivery.git
+$ cd FoxDelivery
+$ yarn install
+$ yarn dev
+```
+Executar o aplicativo em modo de desenvolvimento
+
+
 ## 🛠️ Linguagens
 
 * Node.js
