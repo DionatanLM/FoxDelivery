@@ -7,17 +7,21 @@
 obter motoboys, a todo momento. A plataforma vai direcionar os entregadores que
 estiverem mais próximos para fazer a sua entrega com agilidade.
 
-## 🤝 Linguagens
+## 🛠️ Linguagens
 
 * Node.js
 * React.js
+* React Native
 * HTML, CSS, JS
-* Postgree
+* Typescript
+* MySQL
+
+## 👨‍💻 Especificações do Projeto
+
+Para ver todas as partes técnicas do projeto acesse a aba [Wiki](https://github.com/DionatanLM/FoxDelivery/wiki)
 
 
-
-
-### Ajustes e melhorias
+## ⚙️ Ajustes e melhorias
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
