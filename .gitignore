@@ -1,0 +1,13 @@
+# VSCODE
+.vscode
+
+/apps/admin/build
+/apps/admin/node_modules
+
+/apps/backend/dist
+/apps/backend/node_modules
+
+/apps/frontend/.turbo
+/apps/frontend/.next
+/apps/frontend/node_modules
+node_modules
