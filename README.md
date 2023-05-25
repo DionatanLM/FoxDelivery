@@ -21,12 +21,16 @@ Executar o aplicativo em modo de desenvolvimento
 
 ## 🛠️ Linguagens
 
-* Node.js
-* React.js
-* React Native
-* HTML, CSS, JS
-* Typescript
-* MySQL
+Front-end:
+* Web: React.js, Next.js, SCSS e Bootstrap
+* Mobile: React Native e Expo
+
+Back-end:
+* Nest.js com TypeORM
+* Typescript e Javascript
+
+SGBD:
+* MySQL com Amazon RDS
 
 ## 👨‍💻 Especificações do Projeto
 
@@ -37,12 +41,16 @@ Para ver todas as partes técnicas do projeto acesse a aba [Wiki](https://github
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-- [x] Ideia
-- [x] Prototipo
-- [ ] Aplicação web
-- [ ] Aplicação Mobile
-- [ ] Teste de Software
-- [ ] Conclusão do projeto
+- [x] Análise de requisitos
+- [x] Design de banco de dados
+- [ ] Desenvolvimento da plataforma web
+- [ ] Desenvolvimento do aplicativo móvel
+- [ ] Implementação de autenticação e autorização
+- [ ] Integração de serviços de geolocalização
+- [ ] Implementação de notificações em tempo real
+- [ ] Testes e depuração
+- [ ] Implantação e hospedagem
+- [ ] Monitoramento e manutenção
 
 
 ## 🤝 Colaboradores
