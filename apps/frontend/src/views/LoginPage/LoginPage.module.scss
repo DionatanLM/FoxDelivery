@@ -1,0 +1,258 @@
+.wrapperRow {
+  min-height: 100vh;
+  width: 100%;
+  margin-left: unset;
+}
+
+.wrapperLeft {
+  background-color: #fff;
+  padding: 40px 96px;
+  box-shadow: 0px 0 20px 0px #a36100;
+  z-index: 9;
+
+  @media (max-width: 991px) {
+    background-color: #ffffff;
+    padding: 24px;
+    box-shadow: none;
+  }
+
+  @media (min-width: 768px) and (max-width: 1440px) {
+    padding: 24px 32px 24px 32px;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    @media (min-width: 768px) and (max-width: 1440px) {
+      margin-bottom: 0;
+      padding-top: 0;
+    }
+  }
+
+  .boxes {
+    height: 48px;
+    color: #181818 !important;
+    border: 1px solid #d5d4d2 !important;
+    border-radius: 5px;
+
+    img {
+      width: 27px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1440px) {
+      height: 40px;
+      font-size: 12px !important;
+    }
+  }
+
+  .boxes:hover {
+    background-color: #eeeeee;
+  }
+
+  .welcomeTitle {
+    font-family: 'PoppinsRegular';
+    font-size: 30px;
+    color: #181818;
+    margin-top: 1.5rem;
+    @media (min-width: 768px) and (max-width: 1440px) {
+      margin-top: 0;
+      font-size: 22px;
+    }
+  }
+
+  .welcomeSubTitle {
+    font-family: 'PoppinsRegular';
+    font-size: 14px;
+    color: #181818;
+    width: 360px;
+
+    @media (min-width: 768px) and (max-width: 1440px) {
+      width: 300px;
+      font-size: 12px;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 991px) {
+      display: none;
+    }
+  }
+
+  .mobileLogo {
+    @media (max-width: 991px) {
+      position: relative;
+      width: 210px;
+      height: 43px !important;
+      margin-bottom: 60px;
+      aspect-ratio: 1;
+    }
+  }
+
+  .desktopLogo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5;
+    margin-bottom: 1.25rem;
+    img {
+      height: unset !important;
+      width: unset !important;
+      @media (max-width: 1440px) {
+        aspect-ratio: 7;
+      }
+    }
+    @media (max-width: 1440px) {
+      margin-bottom: 0;
+    }
+  }
+
+  label {
+    font-family: 'PoppinsRegular';
+    font-size: 14px;
+    color: #181818;
+
+    @media (max-width: 1440px) {
+      font-size: 12px;
+    }
+  }
+
+  input[type='text'],
+  input[type='password'] {
+    background-color: #e7e9ee !important;
+    height: 48px;
+    border-radius: 5px !important;
+    border: 1px solid #d7d7d7 !important;
+    color: #181818 !important;
+    box-shadow: none !important;
+    font-family: 'PoppinsRegular';
+
+    &:focus {
+      background-color: #e7e9ee !important;
+      color: #d9d9d9;
+      box-shadow: none !important;
+    }
+
+    @media (max-width: 1440px) {
+      height: 44px;
+      background-color: #e7e9ee !important;
+    }
+  }
+
+  .checkContainer {
+    label {
+      padding: 4px 0 2px 0;
+      font-family: 'PoppinsRegular';
+      font-size: 14px;
+      color: #181818;
+      margin-bottom: 0;
+
+      @media (max-width: 1440px) {
+        font-size: 12px;
+      }
+    }
+
+    input[type='checkbox'] {
+      background-color: transparent !important;
+      border-radius: 2px !important;
+      border: 1px solid #181818 !important;
+      height: 20px;
+      width: 20px;
+      box-shadow: none !important;
+      margin-right: 8px;
+
+      @media (max-width: 1440px) {
+        height: 16px;
+        width: 16px;
+      }
+    }
+  }
+
+  .register {
+    margin-top: 3rem;
+    @media (max-width: 1440px) {
+      margin-top: 1.25rem;
+    }
+  }
+
+  .forgetPasswordText {
+    font-family: 'PoppinsBold';
+    font-size: 12px;
+    color: #f58328;
+  }
+
+  .registerText {
+    font-family: 'PoppinsBold';
+    font-size: 14px;
+    color: #f58328;
+  }
+
+  button {
+    height: 48px;
+    font-family: 'PoppinsRegular';
+    font-size: 14px !important;
+
+    @media (max-width: 991px) {
+      height: 50px;
+    }
+  }
+
+  .hrContainer {
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 1440px) {
+      height: 40px;
+    }
+
+    hr {
+      flex: 1;
+    }
+
+    span {
+      padding: 0 24px;
+      font-family: 'PoppinsRegular';
+      font-size: 14px;
+
+      @media (max-width: 1440px) {
+        font-size: 12px;
+        padding: 0 16px;
+      }
+    }
+  }
+
+  .dontHaveAccountText {
+    font-family: 'PoppinsRegular';
+    font-size: 14px;
+    color: #181818;
+  }
+}
+
+.wrapperRight {
+  background: url('/img/background.png');
+  background-size: cover;
+
+  @media (max-width: 991px) {
+    background: unset;
+    background-color: #ffffff;
+    display: none;
+  }
+
+  .imageContainer {
+    position: relative;
+    width: 30%;
+    aspect-ratio: 1;
+
+    @media (max-width: 991px) {
+      display: none;
+    }
+
+    .loginImage {
+      object-fit: contain;
+    }
+  }
+}
+
+.textError {
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 4px;
+  color: #d66100;
+}

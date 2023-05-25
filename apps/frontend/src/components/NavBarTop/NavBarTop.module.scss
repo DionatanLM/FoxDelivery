@@ -1,12 +1,12 @@
-$primary-color: #b71e23;
-$secondary-color: #898989;
+$primary-color: #f58328;
+$secondary-color: #f58328;
 
 .navBarWrapper {
-  background-color: #292929;
+  background-color: #ffffff;
   margin: 0 auto;
   padding: 0px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  height: 50px;
+  height: 70px;
 
   @media (max-width: 576px) {
     height: 100%;
@@ -18,20 +18,37 @@ $secondary-color: #898989;
   }
 
   .navContainer {
-    padding: 0px;
+    padding: 0px 20px;
     height: 100%;
     max-width: 1440px;
-
     @media (max-width: 576px) {
-      padding-left: 0;
+      padding: 10px 20px;
     }
   }
 }
 
+.navButtons {
+  padding: 8px 20px;
+  border-radius: 5px;
+}
+
 .textWhite {
-  color: #898989 !important;
-  font-family: 'InterSemiBold';
-  font-size: 12px;
+  color: #171717 !important;
+  font-family: 'PoppinsMedium', sans-serif;
+  font-size: 14px;
+}
+
+.registerButton {
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  color: white;
+  white-space: nowrap;
+}
+
+.loginButton {
+  background-color: transparent;
+  color: $secondary-color;
+  border: 1px solid $secondary-color;
 }
 
 .meAuto {
@@ -40,15 +57,20 @@ $secondary-color: #898989;
 
 .navItem {
   height: 100%;
+
   display: flex;
+  gap: 10px;
   align-items: center;
   border-top: 8px solid transparent;
   border-bottom: 4px solid transparent;
 }
+.navItem:nth-child(3) {
+  min-width: 88px;
+}
 
 .activeItem {
-  width: fit-content;
-  border-bottom: 4px solid #b71e23;
+  width: content;
+  border-bottom: 4px solid $primary-color;
 }
 
 .offCanvasBtnContainer {
@@ -62,34 +84,8 @@ $secondary-color: #898989;
     width: max-content;
   }
 
-  .offCanvasBtn {
-    background-color: #292929;
-    padding-left: 1rem;
-
-    svg {
-      color: #f8f8f8;
-    }
-
-    &:hover {
-      background-color: #292929 !important;
-    }
-
-    @media (max-width: 768px) {
-      background-color: transparent;
-      padding-bottom: 5px;
-      padding-left: 0;
-
-      &:hover {
-        background-color: #292929 !important;
-      }
-    }
-    @media (min-width: 576px) and (max-width: 767.9px) {
-      padding-left: 1rem;
-    }
-  }
-
   .offCanvasTitle {
-    font-family: 'InterSemiBold';
+    font-family: 'PoppinsSemiBold';
     font-size: 20px;
     @media (min-width: 769px) {
       display: none !important;
@@ -128,7 +124,22 @@ $secondary-color: #898989;
 }
 
 .navBarCollapse {
+  gap: 20px;
   height: 100% !important;
+}
+
+.buttonContainerDesktop {
+  @media (max-width: 576px) {
+    justify-content: space-between;
+  }
+
+  @media (max-width: 990px) {
+    display: none;
+  }
+
+  @media (min-width: 1440px) {
+    margin-left: 40px;
+  }
 }
 
 .userImg {
@@ -140,10 +151,10 @@ $secondary-color: #898989;
 }
 
 .userDropDown {
-  font-family: "InterRegular";
+  font-family: 'PoppinsRegular';
   left: -24px;
 
-  div{
+  div {
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -153,23 +164,23 @@ $secondary-color: #898989;
     }
   }
 
-  .dropdownItem{
+  .dropdownItem {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-family: "InterRegular";
+    font-family: 'PoppinsRegular';
     color: #505050;
     padding: 10px 7px;
     font-size: 12px;
   }
-  .dropdownItem:hover{
+  .dropdownItem:hover {
     background-color: #e8e8e8;
   }
-  .dropdownItem:active{
+  .dropdownItem:active {
     background-color: #dcdcdc;
   }
 
-  .divider{
+  .divider {
     padding: 0;
     margin: 0;
     border-color: #ededed;
@@ -195,7 +206,7 @@ $secondary-color: #898989;
     color: #f8f8f8 !important;
     border: 0px;
     padding: 22px 30px;
-    font-family: 'InterSemiBold';
+    font-family: 'PoppinsSemiBold';
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -295,7 +306,7 @@ $secondary-color: #898989;
       color: #f8f8f8;
       border: 0px;
       padding: 0px !important;
-      font-family: 'InterMedium';
+      font-family: 'PoppinsMedium';
       font-size: 13px;
 
       li {
@@ -355,7 +366,7 @@ $secondary-color: #898989;
     height: 45px;
     color: #f8f8f8;
     border: 0px;
-    font-family: 'InterMedium';
+    font-family: 'PoppinsMedium';
     font-size: 12px;
     display: grid;
     grid-template-columns: 15% 60% 15% 10%;
@@ -417,17 +428,8 @@ $secondary-color: #898989;
 
 .navBarImg {
   width: 186px;
-}
-
-@media (min-width: 1024px) {
-  .navItem {
-    margin-right: 30px;
-  }
-}
-
-@media (min-width: 1440px) {
-  .navItem {
-    margin-right: 50px;
+  @media (max-width: 576px) {
+    width: 184px;
   }
 }
 

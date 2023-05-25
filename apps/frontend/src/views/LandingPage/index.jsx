@@ -6,7 +6,7 @@ const LandingPage = ({ plans }) => {
   return (
     <Container
       fluid
-      style={{ padding: 0, backgroundColor: '#060606' }}
+      style={{ padding: 0, backgroundColor: '#ffffff' }}
     >
       <HeroSection />
     </Container>
