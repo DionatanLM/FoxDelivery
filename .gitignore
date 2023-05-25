@@ -11,3 +11,7 @@
 /apps/frontend/.next
 /apps/frontend/node_modules
 node_modules
+
+/apps/frontend/.env*
+/apps/admin/.env*
+/apps/backend/.env*
