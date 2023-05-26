@@ -15,7 +15,7 @@ const HeroSection = () => {
           <h4 className={styles.textH4}>Seja bem-vindo a Fox Delivery</h4>
           <h1 className={styles.textH1}>Sua plataforma de entregadores</h1>
           <p>
-            Ajudamos restaurantes a terem entregas de forma rapida e eficiente
+            Ajudamos lojas e restaurantes a terem entregas de forma rapida e eficiente
             com um amplo raio de entrega.
           </p>
           <a

@@ -2,7 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import HeroSection from './sections/HeroSection';
 
-const LandingPage = ({ plans }) => {
+const LandingPage = () => {
   return (
     <Container
       fluid

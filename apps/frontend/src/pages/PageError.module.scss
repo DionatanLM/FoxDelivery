@@ -1,0 +1,59 @@
+.notFoundPage {
+  background-image: url(/img/backgroundAlt.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1 !important;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  font-family: 'InterBold';
+  font-size: 20px;
+  flex-direction: column;
+  z-index: 0;
+}
+
+.numberError {
+  font-family: 'Poppins';
+  font-size: 156px;
+  font-weight: 700;
+  line-height: 199px;
+  color: #f0f0f0;
+}
+
+.title {
+  font-family: 'Poppins';
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 51px;
+  color: #f0f0f0;
+  margin-bottom: 30px;
+}
+
+.description {
+  font-family: 'PoppinsRegular';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #f0f0f0;
+  margin-bottom: 30px;
+}
+
+.button {
+  background-color: #f0f0f0;
+  color: #f58328;
+  padding: 16px 40px 16px 35px;
+  font-family: 'Poppins';
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}

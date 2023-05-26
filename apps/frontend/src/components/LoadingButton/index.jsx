@@ -16,7 +16,6 @@ const LoadingButton = ({ loading, text, loadingText, variant, type }) => {
           <Spinner
             size="sm"
             animation="border"
-            style={{ color: '#ffffff' }}
           />
           {loadingText}
         </>
