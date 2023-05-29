@@ -11,4 +11,61 @@
   width: 100%;
   background-color: #fff;
   border-radius: 5px;
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+
+  .formFloating {
+    color: #969cb3 !important;
+    font-family: 'PoppinsRegular' !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+  }
+
+  input,
+  select {
+    background-color: #e7e9ee !important;
+    border: 1px solid #d7d7d7 !important;
+    border-radius: 5px !important;
+
+    font-family: 'PoppinsRegular' !important;
+    font-size: 14px !important;
+
+    color: #969cb3 !important;
+    height: 50px !important;
+  }
+
+  input:hover,
+  input:focus,
+  select:hover,
+  select:focus,
+  input:active {
+    background: #e7e9ee !important;
+    border: 1px solid #d7d7d7 !important;
+    border-radius: 5px !important;
+
+    font-family: 'PoppinsRegular' !important;
+    font-size: 14px !important;
+
+    color: #969cb3 !important;
+    height: 50px !important;
+  }
+
+  .buttonSave {
+    background-color: #f58328 !important;
+    border-radius: 5px !important;
+    color: #fff !important;
+    font-family: 'PoppinsRegular' !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    height: 50px !important;
+    width: 110px !important;
+  }
+
+  .buttonSave:hover {
+    background-color: #ff9640 !important;
+  }
 }

@@ -49,22 +49,32 @@ function NavBarLeft() {
             Pedidos
           </Nav.Link>
           <Nav.Link
-            href="#chat"
-            className={styles.cardIcon}
+            href="/chat"
+            className={
+              path?.route === '/chat' ? styles.cardIconActive : styles.cardIcon
+            }
           >
             <ChatIcon />
             <span>Chat</span>
           </Nav.Link>
           <Nav.Link
-            href="#reports"
-            className={styles.cardIcon}
+            href="/relatorios"
+            className={
+              path?.route === '/relatorios'
+                ? styles.cardIconActive
+                : styles.cardIcon
+            }
           >
             <ReportIcon />
             Relátorios
           </Nav.Link>
           <Nav.Link
-            href="#payments"
-            className={styles.cardIcon}
+            href="/pagamentos"
+            className={
+              path?.route === '/pagamentos'
+                ? styles.cardIconActive
+                : styles.cardIcon
+            }
           >
             <WalletIcon />
             Pagamentos
@@ -72,8 +82,10 @@ function NavBarLeft() {
         </Nav>
         <Nav className={styles.cardContainer}>
           <Nav.Link
-            href="#conta"
-            className={styles.cardIcon}
+            href="/conta"
+            className={
+              path?.route === '/conta' ? styles.cardIconActive : styles.cardIcon
+            }
           >
             <AccountIcon />
             Conta
