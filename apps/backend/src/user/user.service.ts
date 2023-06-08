@@ -10,6 +10,9 @@ import {
 } from 'src/config/constants/providers';
 import { Deliveryman } from 'src/entities/Deliveryman.entity';
 import { Store } from 'src/entities/Store.entity';
+import { CreateUserStoreDto } from './dto/create-user-store.dto';
+import { CreateUserDeliveryManDto } from './dto/create-user-deliveryman.dto';
+import { USER_ROLE } from 'src/config/constants/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -21,18 +24,19 @@ export class UserService {
     @Inject(DELIVERYMAN_REPOSITORY)
     private deliverymanRepository: Repository<Deliveryman>,
   ) {}
+
   async create(user: CreateUserDto) {
+    console.log(user, 'user');
     const newUser = this.userRepository.create(user);
+
+    if (user.userRole === USER_ROLE.DELIVERYMAN) {
+      await this.createDeliveryman(newUser);
+    }
+    if (user.userRole === USER_ROLE.STORE) {
+      await this.createStore(newUser);
+    }
+
     await this.userRepository.save(newUser);
-
-    // if (user.userRole === 'DELIVERYMAN') {
-    //   await this.createDeliveryman(newUser);
-    // }
-    // if (user.userRole === 'STORE') {
-    //   await this.createStore(newUser);
-    // }
-
-    //const { uuid: uuid_user } = await this.userRepository.save(newUser);
 
     return newUser;
   }
@@ -94,25 +98,67 @@ export class UserService {
     return `This action removes a #${uuid} user`;
   }
 
-  // private async createStore(user: CreateUserStoreDto) {
-  //   const userStore = this.storeRepository.create({
-  //     email: user.username,
-  //     name: user.name,
-  //     cpf: user.cpf,
-  //     cellphone: user.cellphone,
-  //   });
-  //   const { uuid } = await this.storeRepository.save(userStore);
-  //   return uuid;
-  // }
+  private async createStore(user: CreateUserStoreDto) {
+    console.log(user, 'user, createStore');
 
-  // private async createDeliveryman(user: CreateUserDeliverymanDto) {
-  //   const userDeliveryman = this.deliverymanRepository.create({
-  //     email: user.username,
-  //     name: user.name,
-  //     cpf: user.cpf,
-  //     cellphone: user.cellphone,
-  //   });
-  //   const { uuid } = await this.deliverymanRepository.save(userDeliveryman);
-  //   return uuid;
-  // }
+    const userStore = this.storeRepository.create({
+      email: user.username,
+      name: user.name,
+      responsibleName: user.responsibleName,
+      cnpj: user.cnpj,
+      cellphone: user.cellphone,
+      category: user.category,
+      address: user.address,
+      neighborhood: user.neighborhood,
+      postalCode: user.postalCode,
+    });
+    console.log(userStore, 'userStore');
+
+    const { uuid } = await this.storeRepository.save(userStore);
+    return uuid;
+  }
+
+  private async createDeliveryman(user: CreateUserDeliveryManDto) {
+    const userDeliveryman = this.deliverymanRepository.create({
+      email: user.username,
+      name: user.name,
+      cpf: user.cpf,
+      cellphone: user.cellphone,
+      birthdate: user.birthdate,
+      cnh: user.cnh,
+      postalCode: user.postalCode,
+      address: user.address,
+      neighborhood: user.neighborhood,
+    });
+    const { uuid } = await this.deliverymanRepository.save(userDeliveryman);
+    return uuid;
+  }
+
+  async createUserAndStore(user: CreateUserStoreDto) {
+    const newUser = this.userRepository.create({
+      name: user.name,
+      username: user.username,
+      password: user.password,
+    });
+    await this.userRepository.save(newUser);
+
+    await this.createStore(user);
+
+    return newUser;
+  }
+
+  async findOneByUsernameWithDeleted(
+    username: string,
+  ): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({
+      where: { username },
+      loadEagerRelations: true,
+      withDeleted: true,
+    });
+    return user;
+  }
+
+  async restoreSoftDeleted(uuid: string): Promise<any> {
+    return await this.userRepository.restore(uuid);
+  }
 }

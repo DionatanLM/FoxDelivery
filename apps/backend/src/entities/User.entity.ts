@@ -37,8 +37,11 @@ export class User {
   @UpdateDateColumn({ name: 'updatedAt' })
   updateDate: Date | null;
 
-  @Column('enum', { enum: USER_ROLE, name: 'role' })
+  @Column('enum', { enum: USER_ROLE, name: 'role', default: USER_ROLE.STORE })
   userRole: USER_ROLE;
+
+  @Column('int', { name: 'user_token', nullable: true })
+  userToken: number;
 
   @DeleteDateColumn({ name: 'deletedAt' })
   deletedAt: Date | null;
@@ -46,12 +49,6 @@ export class User {
   @Column('varchar', { name: 'password', nullable: false, length: 100 })
   @Exclude({ toPlainOnly: true })
   password: string | null;
-
-  @OneToMany(() => Deliveryman, (deliveryman) => deliveryman.user)
-  deliveryman: Deliveryman[];
-
-  @OneToMany(() => Store, (store) => store.user)
-  store: Store[];
 
   @BeforeInsert()
   async hashPassword() {

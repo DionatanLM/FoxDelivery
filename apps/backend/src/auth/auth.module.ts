@@ -6,11 +6,15 @@ import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthHelper } from './auth.helper';
+import { PassportModule } from '@nestjs/passport';
+import { StoreModule } from 'src/store/store.module';
 
 @Module({
   imports: [
     DeliveryManModule,
     UserModule,
+    StoreModule,
+    PassportModule,
     JwtModule.register({
       secret: 'jwtConstants.secret',
       signOptions: { expiresIn: '60000000s' },
@@ -18,6 +22,6 @@ import { AuthHelper } from './auth.helper';
   ],
   controllers: [AuthController],
   providers: [JwtStrategy, AuthService, AuthHelper],
-  exports: [AuthHelper],
+  exports: [PassportModule, AuthHelper, AuthService],
 })
 export class AuthModule {}

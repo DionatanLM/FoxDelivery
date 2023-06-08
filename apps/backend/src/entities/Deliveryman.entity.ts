@@ -1,13 +1,12 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { City } from './City.entity';
-import { User } from './User.entity';
-
 @Entity('deliveryman', { schema: 'foxdelivery' })
 export class Deliveryman {
   @PrimaryGeneratedColumn('uuid')
@@ -31,17 +30,28 @@ export class Deliveryman {
   @Column({ length: 11 })
   cnh: string;
 
-  @Column({ length: 8 })
+  @Column({ name: 'postal_code', length: 8 })
   postalCode: string;
 
   @Column({ length: 100 })
   address: string;
 
-  @Column({ length: 100 })
-  neighborhood: string;
+  @Column('varchar', {
+    name: 'neighborhood',
+    nullable: true,
+    length: 100,
+  })
+  neighborhood: string | null;
 
-  @ManyToOne(() => City, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' })
-  @JoinColumn({ name: 'id_city', referencedColumnName: 'id' })
+  @Column('int', { name: 'id_city', nullable: true })
+  idCity: number | null;
+
+  @ManyToOne(() => City, (cidade) => cidade.deliverymanCity, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+    eager: true,
+  })
+  @JoinColumn([{ name: 'id_city', referencedColumnName: 'id' }])
   city: City;
 
   @Column({ nullable: true })
@@ -55,8 +65,4 @@ export class Deliveryman {
 
   @Column({ nullable: true })
   inactivatedAt: Date;
-
-  @ManyToOne(() => User, (user) => user.deliveryman)
-  @JoinColumn({ name: 'user_uuid' })
-  user: User;
 }

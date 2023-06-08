@@ -31,4 +31,8 @@ export class AuthHelper {
   public generateToken(user: User): string {
     return this.jwt.sign({ uuid: user.uuid, email: user.username });
   }
+
+  public generateCode(): number {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
 }

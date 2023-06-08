@@ -13,9 +13,15 @@ export class StoreService {
 
   async create(store: CreateStoreDto) {
     const newStore = this.storeRepository.create(store);
-    await this.storeRepository.save(newStore);
+    const { uuid } = await this.storeRepository.save(newStore);
 
-    return newStore;
+    return await this.storeRepository.findOneBy({ uuid });
+  }
+
+  async findStudentByCnpj(cnpj: string) {
+    return await this.storeRepository.findOne({
+      where: { cnpj },
+    });
   }
 
   findAll(): Promise<Store[]> {
@@ -23,14 +29,14 @@ export class StoreService {
   }
 
   findOne(uuid: string) {
-    return `This action returns a #${uuid} DeliveryMan`;
+    return `This action returns a #${uuid} Store`;
   }
 
   update(uuid: string, updateStoreDto: UpdateStoreDto) {
-    return `This action updates a #${uuid} DeliveryMan`;
+    return `This action updates a #${uuid} Store`;
   }
 
   remove(uuid: string) {
-    return `This action removes a #${uuid} DeliveryMan`;
+    return `This action removes a #${uuid} Store`;
   }
 }

@@ -9,6 +9,7 @@ import { join } from 'path';
 import { OrderModule } from './order/order.module';
 import { DeliveryManModule } from './deliveryman/deliveryman.module';
 import { AuthModule } from './auth/auth.module';
+import { StoreModule } from './store/store.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     OrderModule,
     DeliveryManModule,
+    StoreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

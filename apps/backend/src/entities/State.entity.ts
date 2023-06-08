@@ -9,7 +9,7 @@ import {
 import { City } from './City.entity';
 import { Country } from './Country.entity';
 
-@Index('fk_State_Country1', ['countryId'], {})
+@Index('country_id', ['countryId'], {})
 @Entity('state', { schema: 'foxdelivery' })
 export class State {
   @Column('int', { primary: true, name: 'id' })

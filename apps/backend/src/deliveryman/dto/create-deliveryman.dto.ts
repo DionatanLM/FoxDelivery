@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateDeliveryManDto {
   @IsString()
@@ -33,7 +39,7 @@ export class CreateDeliveryManDto {
   @IsNotEmpty()
   public neighborhood: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  public email: string;
+  @IsNumber()
+  @IsOptional()
+  public idCity?: number;
 }

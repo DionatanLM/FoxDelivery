@@ -16,8 +16,8 @@ export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
   @Post()
-  create(@Body() createDeliveryManDto: CreateStoreDto) {
-    return this.storeService.create(createDeliveryManDto);
+  create(@Body() createStoreDto: CreateStoreDto) {
+    return this.storeService.create(createStoreDto);
   }
 
   @Get()
@@ -31,11 +31,8 @@ export class StoreController {
   }
 
   @Patch(':uuid')
-  update(
-    @Param('uuid') uuid: string,
-    @Body() updateDeliveryManDto: UpdateStoreDto,
-  ) {
-    return this.storeService.update(uuid, updateDeliveryManDto);
+  update(@Param('uuid') uuid: string, @Body() updateStoreDto: UpdateStoreDto) {
+    return this.storeService.update(uuid, updateStoreDto);
   }
 
   @Delete(':uuid')

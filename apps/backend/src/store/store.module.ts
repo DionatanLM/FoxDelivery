@@ -10,4 +10,4 @@ import { StoreController } from './store.controllers';
   providers: [...storeProviders, StoreService],
   exports: [StoreService],
 })
-export class DeliveryManModule {}
+export class StoreModule {}

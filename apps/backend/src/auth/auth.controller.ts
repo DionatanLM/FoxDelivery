@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ResponseLoginDto } from './dto/response-login.dto';
+import { CreateUserStoreDto } from 'src/user/dto/create-user-store.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -28,14 +29,14 @@ export class AuthController {
   //   return tokenNUserInfo;
   // }
 
-  // @Post('register')
-  // public async register(
-  //   @Body() newUser: CreateUserDeliverymanDto,
-  // ): Promise<ResponseLoginDto | any> {
-  //   try {
-  //     return await this.authService.registerUser(newUser);
-  //   } catch (e) {
-  //     return { error: e };
-  //   }
-  // }
+  @Post('register')
+  public async register(
+    @Body() newUser: CreateUserStoreDto,
+  ): Promise<ResponseLoginDto | any> {
+    try {
+      return await this.authService.registerUserStore(newUser);
+    } catch (e) {
+      return { error: e };
+    }
+  }
 }
