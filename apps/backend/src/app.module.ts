@@ -10,7 +10,6 @@ import { OrderModule } from './order/order.module';
 import { DeliveryManModule } from './deliveryman/deliveryman.module';
 import { AuthModule } from './auth/auth.module';
 import { StoreModule } from './store/store.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({

@@ -20,12 +20,18 @@ export class AuthService {
     private readonly storeService: StoreService,
   ) {}
 
+  // LOGIN PLATAFORM WEB
   public async login(body: LoginDto): Promise<ResponseLoginDto | never> {
     const { username, password }: LoginDto = body;
     let user = await this.userService.findOneByUsername(username);
     if (!user) {
       user = await this.userService.findOneByCpfCnpj(username);
     }
+
+    if (user && !(user.userRole === 'STORE' || user.userRole === 'ADMIN')) {
+      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+    }
+
     const token = await this.checkUserAndGenToken(user, password);
     await this.userService.insertLastAccess(user);
     return { token, user };
@@ -35,7 +41,6 @@ export class AuthService {
     if (!user) {
       throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
-    console.log(user);
 
     const isPasswordValid: boolean = await this.helper.isPasswordValid(
       password,

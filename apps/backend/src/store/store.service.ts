@@ -28,8 +28,10 @@ export class StoreService {
     return this.storeRepository.find();
   }
 
-  findOne(uuid: string) {
-    return `This action returns a #${uuid} Store`;
+  async findOne(uuid: string) {
+    return await this.storeRepository.findOne({
+      where: { uuid: uuid },
+    });
   }
 
   update(uuid: string, updateStoreDto: UpdateStoreDto) {

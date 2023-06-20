@@ -27,6 +27,21 @@ $secondary-color: #f58328;
   }
 }
 
+.userName {
+  margin-right: 10px;
+  color: #171717 !important;
+  font-family: 'PoppinsMedium', sans-serif;
+  font-size: 14px;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.containerUserAuth {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 .navButtons {
   padding: 8px 20px;
   border-radius: 5px;
@@ -152,7 +167,6 @@ $secondary-color: #f58328;
 
 .userDropDown {
   font-family: 'PoppinsRegular';
-  left: -24px;
 
   div {
     margin: 0 !important;

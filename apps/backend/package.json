@@ -24,16 +24,18 @@
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/axios": "^2.0.0",
-    "@nestjs/common": "^9.0.0",
+    "@nestjs/common": "^9.4.2",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/mapped-types": "^1.2.0",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.3.9",
+    "@nestjs/platform-socket.io": "^9.4.2",
     "@nestjs/schedule": "^2.2.1",
     "@nestjs/serve-static": "^3.0.1",
     "@nestjs/swagger": "^6.2.1",
+    "@nestjs/websockets": "^9.4.2",
     "@types/aws-sdk": "^2.7.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cron": "^2.0.1",
@@ -59,6 +61,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "slugify": "^1.6.5",
+    "socket.io": "^4.6.2",
     "typeorm": "^0.3.10"
   },
   "devDependencies": {

@@ -25,15 +25,15 @@ export class UserService {
     private deliverymanRepository: Repository<Deliveryman>,
   ) {}
 
-  async create(user: CreateUserDto) {
-    console.log(user, 'user');
+  async create(
+    user: CreateUserDto | CreateUserStoreDto | CreateUserDeliveryManDto,
+  ) {
     const newUser = this.userRepository.create(user);
-
     if (user.userRole === USER_ROLE.DELIVERYMAN) {
-      await this.createDeliveryman(newUser);
+      await this.createDeliveryman(user);
     }
     if (user.userRole === USER_ROLE.STORE) {
-      await this.createStore(newUser);
+      await this.createStore(user);
     }
 
     await this.userRepository.save(newUser);
@@ -99,8 +99,6 @@ export class UserService {
   }
 
   private async createStore(user: CreateUserStoreDto) {
-    console.log(user, 'user, createStore');
-
     const userStore = this.storeRepository.create({
       email: user.username,
       name: user.name,
@@ -109,10 +107,11 @@ export class UserService {
       cellphone: user.cellphone,
       category: user.category,
       address: user.address,
+      lat: user.lat,
+      lng: user.lng,
       neighborhood: user.neighborhood,
       postalCode: user.postalCode,
     });
-    console.log(userStore, 'userStore');
 
     const { uuid } = await this.storeRepository.save(userStore);
     return uuid;
@@ -156,6 +155,27 @@ export class UserService {
       withDeleted: true,
     });
     return user;
+  }
+
+  // findOneStoreByUsername(email: string): Promise<Store | undefined> {
+  //   const user = await this.userRepository.findOne(userId, {
+  //   });
+
+  //   return email;
+  // }
+
+  async findStoreByUserId(userId: string): Promise<Store | null> {
+    const user = await this.userRepository.findOne({
+      where: { uuid: userId },
+    });
+    if (!user) {
+      return null;
+    }
+
+    const store = await this.storeRepository.findOne({
+      where: { email: user.username },
+    });
+    return store || null;
   }
 
   async restoreSoftDeleted(uuid: string): Promise<any> {

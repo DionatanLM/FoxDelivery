@@ -10,14 +10,21 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserStoreDto } from './dto/create-user-store.dto';
+import { CreateUserDeliveryManDto } from './dto/create-user-deliveryman.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
+  create(
+    @Body()
+    createUserDto:
+      | CreateUserDto
+      | CreateUserStoreDto
+      | CreateUserDeliveryManDto,
+  ) {
     return this.userService.create(createUserDto);
   }
 
@@ -29,6 +36,11 @@ export class UserController {
   @Get(':uuid')
   findOne(@Param('uuid') uuid: string) {
     return this.userService.findOne(uuid);
+  }
+
+  @Get('store/:uuid')
+  findStoreByUserId(@Param('uuid') uuid: string) {
+    return this.userService.findStoreByUserId(uuid);
   }
 
   @Patch(':uuid')

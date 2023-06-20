@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styles from './MapSection.module.scss';
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
+import io from 'socket.io-client';
+import { getSession, useSession } from 'next-auth/react';
 
-const MapSection = () => {
+const MapSection = ({ userStore }) => {
+  const { data: sessionData } = useSession();
+
   const mapStyle = [
     {
       featureType: 'all',
@@ -19,6 +23,15 @@ const MapSection = () => {
       ],
     },
   ];
+
+  const socket = io('http://localhost:8080');
+
+  useEffect(() => {
+    socket.on('message', () => {
+      console.log('connectedddd');
+    });
+  }, []);
+
   return (
     <Container
       fluid
@@ -26,21 +39,21 @@ const MapSection = () => {
     >
       <Map
         google={google}
-        initialCenter={{ lat: -27.4333881, lng: -48.4565341 }}
+        initialCenter={{ lat: userStore?.lat, lng: userStore?.lng }}
         disableDefaultUI={true}
         styles={mapStyle}
-        zoom={15}
+        zoom={14}
       >
         <Marker
-          title="Sua Loja"
+          title={`Sua Loja: ${userStore?.name}`}
           icon={{
             url: '/img/storeLocation.png',
             scaledSize: new google.maps.Size(30, 30),
           }}
           position={{
-            lat: -27.4287974,
+            lat: userStore?.lat,
 
-            lng: -48.4577624,
+            lng: userStore?.lng,
           }}
         />
       </Map>

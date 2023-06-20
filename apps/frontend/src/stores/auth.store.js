@@ -4,10 +4,7 @@ import { persist } from 'zustand/middleware';
 import { AUTH_TOKEN } from '../constants/auth.constants';
 import { useEffect, useState } from 'react';
 import { signIn, signOut } from 'next-auth/react';
-import {
-  TOAST_MESSAGE_RESEND_CODE,
-  TOAST_MESSAGE_RESET_PASSWORD,
-} from '../constants/messages.constants';
+//import { TOAST_MESSAGE_RESET_PASSWORD } from '../constants/messages.constants';
 
 const emptyState = (set, get) => ({
   loading: false,
@@ -18,7 +15,7 @@ const emptyState = (set, get) => ({
   username: '',
   usernameAsterisk: '',
   cellphoneAsterisk: '',
-  toastMessage: TOAST_MESSAGE_RESET_PASSWORD.success,
+  //toastMessage: TOAST_MESSAGE_RESET_PASSWORD.success,
   showToastMessage: false,
   _hasHydrated: false,
 
@@ -81,13 +78,13 @@ const emptyState = (set, get) => ({
   register: async body => {
     set({ loading: true });
 
-    const { username, password, cpf, cellphone, name } = body;
+    const { username, password, cnpj, cellphone, name } = body;
 
     try {
       const response = await signIn('foxdelivery', {
         username,
         password,
-        cpf,
+        cnpj,
         cellphone,
         name,
         redirect: false,
@@ -147,57 +144,58 @@ const emptyState = (set, get) => ({
       });
     }
   },
-  validateCodeForgotPassword: async (username, code) => {
-    set({ loading: true });
-    try {
-      const res = await authService.validateCodeForgotPassword({
-        username,
-        code: Number(code),
-      });
+  // validateCodeForgotPassword: async (username, code) => {
+  //   set({ loading: true });
+  //   try {
+  //     const res = await authService.validateCodeForgotPassword({
+  //       username,
+  //       code: Number(code),
+  //     });
 
-      if (res.error) {
-        throw new Error(res.error.message);
-      }
-      return res;
-    } catch (e) {
-      set({ message: e.message, showMessage: true });
-    } finally {
-      set({
-        loading: false,
-      });
-    }
-  },
-  resetPassword: async (newPassword, code, username, currentPassword) => {
-    set({ loading: true });
-    try {
-      const res = await authService.resetPassword({
-        password: newPassword,
-        code: Number(code),
-        username,
-        currentPassword,
-      });
+  //     if (res.error) {
+  //       throw new Error(res.error.message);
+  //     }
+  //     return res;
+  //   } catch (e) {
+  //     set({ message: e.message, showMessage: true });
+  //   } finally {
+  //     set({
+  //       loading: false,
+  //     });
+  //   }
+  // },
+  // resetPassword: async (newPassword, code, username, currentPassword) => {
+  //   set({ loading: true });
+  //   try {
+  //     const res = await authService.resetPassword({
+  //       password: newPassword,
+  //       code: Number(code),
+  //       username,
+  //       currentPassword,
+  //     });
 
-      set({
-        toastMessage: TOAST_MESSAGE_RESET_PASSWORD.success,
-        showToastMessage: true,
-      });
+  //     set({
+  //       toastMessage: TOAST_MESSAGE_RESET_PASSWORD.success,
+  //       showToastMessage: true,
+  //     });
 
-      return res;
-    } catch (e) {
-      set({
-        message: e?.message,
-        toastMessage: { message: e?.response?.data?.message, bg: 'danger' },
-        showToastMessage: true,
-      });
-    } finally {
-      set({
-        loading: false,
-      });
-    }
-  },
-  hideToastMessage: () => {
-    set({ showToastMessage: false });
-  },
+  //     return res;
+  //   } catch (e) {
+  //     set({
+  //       message: e?.message,
+  //       toastMessage: { message: e?.response?.data?.message, bg: 'danger' },
+  //       showToastMessage: true,
+  //     });
+  //   } finally {
+  //     set({
+  //       loading: false,
+  //     });
+  //   }
+  // },
+  
+  // hideToastMessage: () => {
+  //   set({ showToastMessage: false });
+  // },
 });
 
 const usePersistedStore = create(

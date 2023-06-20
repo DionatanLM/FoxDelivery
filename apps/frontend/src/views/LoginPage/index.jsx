@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -10,21 +10,22 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './LoginPage.module.scss';
-// import { useAuth } from '../../stores/auth.store';
+import { useAuth } from '../../stores/auth.store';
 // import AuthColRight from '../../components/AuthColRight';
 import { signIn, useSession } from 'next-auth/react';
 import LoadingButton from '@/components/LoadingButton';
-// import { useCallbackUrl } from '../../stores/callback-url.store';
+import { useCallbackUrl } from '../../stores/callback-url.store';
 // import LoadingButton from '../../components/LoadingButton';
 // import useStorage from '../../hooks/use-storage';
 
 const LoginPage = () => {
-  //   const { login, showMessage, message, hideAuthMessage, loading } = useAuth();
-  //   const { callbackUrl, setCallbackUrl } = useCallbackUrl();
+  const { login, message, hideAuthMessage, loading } = useAuth();
+  const { callbackUrl, setCallbackUrl } = useCallbackUrl();
+  const [showMessage, setShowMessage] = useState(false);
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .required('Um email ou CPF é obrigatório')
+      .required('Um email ou CNPJ é obrigatório')
       .lowercase(),
     password: Yup.string().required('Senha é obrigatória'),
   });
@@ -37,33 +38,35 @@ const LoginPage = () => {
   //   const { setItem } = useStorage();
 
   const onSubmit = async data => {
-    await login(data);
+    console.log(data);
+    const response = await login(data);
+    if (response?.error) {
+      setShowMessage(true);
+    }
+    router.push('/home');
   };
 
-  //   useEffect(() => {
-  //     if (router.query?.callbackUrl) {
-  //       setCallbackUrl(router.query.callbackUrl);
-  //     }
-  //     if (router.query?.ref) {
-  //       setItem('referralCode', router.query.callbackUrl);
-  //     }
-  //   }, [router.query]);
+  useEffect(() => {
+    if (router.query?.callbackUrl) {
+      setCallbackUrl(router.query.callbackUrl);
+    }
+  }, [router.query]);
 
-  //   useEffect(() => {
-  //     if (session.data) {
-  //       if (callbackUrl) {
-  //         router.push(callbackUrl);
-  //         setCallbackUrl(undefined);
-  //       } else {
-  //         router.push('/');
-  //       }
-  //     }
-  //     if (showMessage) {
-  //       setTimeout(() => {
-  //         hideAuthMessage();
-  //       }, 6000);
-  //     }
-  //   }, [session.data, message, showMessage]);
+  useEffect(() => {
+    if (session.data) {
+      if (callbackUrl) {
+        router.push(callbackUrl);
+        setCallbackUrl(undefined);
+      } else {
+        router.push('/');
+      }
+    }
+    if (showMessage) {
+      setTimeout(() => {
+        hideAuthMessage();
+      }, 3000);
+    }
+  }, [session.data, showMessage]);
 
   return (
     <Row className={styles.wrapperRow}>
@@ -94,7 +97,7 @@ const LoginPage = () => {
               </div>
             </div>
             <h5 className={`d-none d-lg-block mb-2 ${styles.welcomeTitle}`}>
-              Bem-vindo de volta
+              Bem-vindo
             </h5>
             <p className={styles.welcomeSubTitle}>
               Entre com seus dados de acesso!
@@ -106,12 +109,12 @@ const LoginPage = () => {
           >
             <Form.Group className="mb-3">
               <Form.Label className={styles.labels}>
-                Email, CPF ou CNPJ
+                Email ou CNPJ
               </Form.Label>
               <Form.Control
                 size="lg"
                 type="text"
-                placeholder="Informe seu email, CPF ou CNPJ
+                placeholder="Informe seu email ou CNPJ
                 "
                 {...register('username')}
                 isInvalid={!!errors.username}
@@ -140,9 +143,9 @@ const LoginPage = () => {
                 {errors.password?.message}
               </Form.Control.Feedback>
 
-              {/* {showMessage && !errors.password?.message && (
+              {showMessage && !errors.password?.message && message && (
                 <p className={styles.textError}>{message}</p>
-              )} */}
+              )}
             </Form.Group>
 
             <Form.Group
@@ -173,7 +176,7 @@ const LoginPage = () => {
                 className={styles.boxes}
                 type="submit"
                 variant="primary"
-                //loading={loading || session?.data}
+                loading={loading || session?.data}
                 text="Login"
                 loadingText="Logando..."
               />
@@ -191,9 +194,9 @@ const LoginPage = () => {
               className={styles.boxes}
               variant="social"
               size="lg"
-              onClick={() =>
-                signIn('google', { callbackUrl: callbackUrl || '/' })
-              }
+              // onClick={() =>
+              //   signIn('google', { callbackUrl: callbackUrl || '/' })
+              // }
             >
               <img src="/img/logo_google.svg" />
               <span>Fazer login com Google</span>

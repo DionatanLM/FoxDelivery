@@ -41,6 +41,14 @@ export class CreateUserStoreDto {
 
   @IsString()
   @IsNotEmpty()
+  public lat?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public lng?: string;
+
+  @IsString()
+  @IsNotEmpty()
   public neighborhood?: string;
 
   @IsString()

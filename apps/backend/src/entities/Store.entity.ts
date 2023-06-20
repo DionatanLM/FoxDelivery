@@ -3,9 +3,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { City } from './City.entity';
+import { User } from './User.entity';
 @Entity('store', { schema: 'foxdelivery' })
 export class Store {
   @PrimaryGeneratedColumn('uuid')
@@ -28,6 +30,12 @@ export class Store {
 
   @Column({ name: 'address', length: 100 })
   address: string;
+
+  @Column({ name: 'lat', length: 100 })
+  lat: string;
+
+  @Column({ name: 'lng', length: 100 })
+  lng: string;
 
   @Column({ name: 'category', length: 45, nullable: true })
   category: string;

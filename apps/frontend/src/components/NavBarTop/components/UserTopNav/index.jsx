@@ -5,24 +5,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { faSignOutAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../NavBarTop.module.scss';
-//import { useAuth } from '../../../../stores/auth.store';
-//import { useSession } from 'next-auth/react';
+import { useAuth } from '../../../../stores/auth.store';
+import { useSession } from 'next-auth/react';
 
 const UserTopNav = () => {
-  //const { data } = useSession();
-  //const { logout } = useAuth();
+  const { data } = useSession();
+  const { logout } = useAuth();
   return (
     <Nav className="p-0 m-0">
       <NavDropdown
         className={styles.userDropDown}
         title={
           <>
-            <span className="me-3">
-              {'Visitante'}
+            <span className={styles.userName}>
+              {data?.user?.name.split(' ')[0] ?? 'Visitante'}
             </span>
             <img
               className={styles.userImg}
-              src={'/img/user.png'}
+              src={data?.user?.image ? data?.user?.image : '/img/user.png'}
               referrerPolicy="no-referrer"
             />
           </>
@@ -44,7 +44,7 @@ const UserTopNav = () => {
         <Link
           href="#"
           className={styles.dropdownItem}
-          //onClick={() => logout()}
+          onClick={() => logout()}
         >
           <FontAwesomeIcon
             icon={faSignOutAlt}

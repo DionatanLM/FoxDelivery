@@ -11,9 +11,12 @@ import Placeholder from 'react-bootstrap/Placeholder';
 import styles from './NavBarTop.module.scss';
 import Button from 'react-bootstrap/Button';
 import { useSession } from 'next-auth/react';
+import { useAuth } from '@/stores/auth.store';
 
 function NavBarTop({ menuItems, mainRoute, subRoute, instructorName }) {
   const session = useSession();
+  const { logout } = useAuth();
+
   const { data } = session;
 
   return (
@@ -102,9 +105,28 @@ function NavBarTop({ menuItems, mainRoute, subRoute, instructorName }) {
                   </Placeholder>
                 </div>
               ) : !!data ? (
-                <>
-                  <UserTopNav />
-                </>
+                <div className={styles.containerUserAuth}>
+                  {/* <UserTopNav /> */}
+
+                  <Nav.Link
+                    className={[styles.textWhite, styles.navLoginItem]}
+                    href="/home"
+                  >
+                    <Button
+                      bsPrefix={[styles.navButtons, styles.registerButton]}
+                    >
+                      Acessar plataforma
+                    </Button>
+                  </Nav.Link>
+                  <Nav.Link
+                    className={[styles.textWhite, styles.navLoginItem]}
+                    onClick={() => logout()}
+                  >
+                    <Button bsPrefix={[styles.loginButton, styles.navButtons]}>
+                      Sair
+                    </Button>
+                  </Nav.Link>
+                </div>
               ) : (
                 <div className="d-flex align-items-center justify-content-end gap-2">
                   <Nav.Link
