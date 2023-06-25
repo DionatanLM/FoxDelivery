@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { City } from './City.entity';
 import { User } from './User.entity';
+import { Order } from './Order.entity';
 @Entity('store', { schema: 'foxdelivery' })
 export class Store {
   @PrimaryGeneratedColumn('uuid')
@@ -72,4 +73,7 @@ export class Store {
   })
   @JoinColumn([{ name: 'id_city', referencedColumnName: 'id' }])
   city: City;
+
+  @OneToMany(() => Order, (order) => order.storeUuid)
+  order: Order[];
 }

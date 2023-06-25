@@ -12,12 +12,17 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ColumnNumericTransformer } from 'src/transformers/column-numeric.transformer';
+import { Deliveryman } from './Deliveryman.entity';
+import { Store } from './Store.entity';
 
 @Entity('order', { schema: 'foxdelivery' })
 export class Order {
   @Column('varchar', { primary: true, name: 'uuid', length: 36 })
   @Generated('uuid')
   uuid: string;
+
+  @Column('numeric', { name: 'order_number' })
+  orderNumber: number;
 
   @Column({
     type: 'enum',
@@ -49,6 +54,13 @@ export class Order {
 
   @Column({ type: 'varchar', name: 'address', nullable: false, length: 100 })
   address: string;
+
+  @Column({
+    type: 'longtext',
+    name: 'lat_lng_address',
+    nullable: false,
+  })
+  latLngAddress: string;
 
   @Column({ type: 'varchar', name: 'address', nullable: true, length: 100 })
   addressComplement: string;
@@ -94,19 +106,9 @@ export class Order {
   @DeleteDateColumn({ name: 'deletedAt' })
   deletedAt: Date | null;
 
-  @Index('deliveryman_uuid_idx')
-  @Column({ type: 'varchar', length: 36 })
-  deliverymanUuid: string;
+  @JoinColumn([{ name: 'deliveryman_uuid', referencedColumnName: 'uuid' }])
+  deliverymanUuid: Deliveryman;
 
-  @Index('store_uuid_idx')
-  @Column({ type: 'varchar', length: 36 })
-  storeUuid: string;
-
-  //   @ManyToOne(() => Deliveryman, { onDelete: 'RESTRICT', onUpdate: 'CASCADE' })
-  //   @JoinColumn([{ name: 'deliveryman_uuid', referencedColumnName: 'uuid' }])
-  //   deliveryman: Deliveryman;
-
-  //   @ManyToOne(() => Store, { onDelete: 'RESTRICT', onUpdate: 'CASCADE' })
-  //   @JoinColumn([{ name: 'store_uuid', referencedColumnName: 'uuid' }])
-  //   store: Store;
+  @JoinColumn([{ name: 'store_uuid', referencedColumnName: 'uuid' }])
+  storeUuid: Store;
 }

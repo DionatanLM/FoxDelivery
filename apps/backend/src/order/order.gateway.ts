@@ -13,7 +13,7 @@ export class OrderGateway {
 
   handleConnection(client: Socket, ...args: any[]) {
     this.users[client.id] = { name: 'Dionatan', email: 'dionatan@gmail.com' };
-    console.log(this.users);
+    //console.log(this.users);
   }
 
   @SubscribeMessage('message')

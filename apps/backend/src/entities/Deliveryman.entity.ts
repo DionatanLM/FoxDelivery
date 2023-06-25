@@ -4,9 +4,11 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { City } from './City.entity';
+import { Order } from './Order.entity';
 @Entity('deliveryman', { schema: 'foxdelivery' })
 export class Deliveryman {
   @PrimaryGeneratedColumn('uuid')
@@ -65,4 +67,7 @@ export class Deliveryman {
 
   @Column({ nullable: true })
   inactivatedAt: Date;
+
+  @OneToMany(() => Order, (order) => order.deliverymanUuid)
+  order: Order[];
 }

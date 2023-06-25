@@ -19,7 +19,7 @@ const HomePage = ({ userStore }) => {
       <Row className={styles.leftNavBar}>
         <NavBarLeft />
         <Col className="p-0 m-0">
-          <FormSection />
+          <FormSection userStore={userStore} />
           <MapSection userStore={userStore} />
         </Col>
       </Row>

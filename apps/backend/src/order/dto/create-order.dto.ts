@@ -1,14 +1,26 @@
-import { IsDecimal, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDecimal,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ORDER_STATUS } from 'src/config/constants/order-status.enum';
+import { PAYMENTS_METHODS } from 'src/config/constants/payments_methods_enum';
+import { Store } from 'src/entities/Store.entity';
 
 export class CreateOrderDto {
   @IsDecimal()
-  @IsNotEmpty()
-  public price: string;
-
-  @IsString()
   @IsOptional()
-  public description: string;
+  public orderNumber: number;
+
+  @IsDecimal()
+  @IsNotEmpty()
+  public price: number;
+
+  // @IsString()
+  // @IsOptional()
+  // public description: string;
 
   @IsString()
   @IsNotEmpty()
@@ -20,21 +32,33 @@ export class CreateOrderDto {
 
   @IsString()
   @IsNotEmpty()
-  public status: ORDER_STATUS;
+  public latLngAddress: string;
 
   @IsString()
   @IsOptional()
-  public positionMotoboy: string;
+  public status: ORDER_STATUS;
 
-  @IsDecimal()
-  @IsOptional()
-  public rating: string;
+  // @IsString()
+  // @IsOptional()
+  // public positionMotoboy: string;
+
+  // @IsDecimal()
+  // @IsOptional()
+  // public rating: string;
 
   @IsString()
   @IsOptional()
   public clientName: string;
 
+  // @IsString()
+  // @IsOptional()
+  // public clientCellphone: string;
+
+  // @IsString()
+  // @IsOptional()
+  // public deliverymanUuid: string;
+
   @IsString()
   @IsOptional()
-  public clientCellphone: string;
+  public storeUuid: Store;
 }
