@@ -43,10 +43,10 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 - [x] Análise de requisitos
 - [x] Design de banco de dados
-- [ ] Desenvolvimento da plataforma web
-- [ ] Desenvolvimento do aplicativo móvel
+- [x] Desenvolvimento da plataforma web
+- [x] Desenvolvimento do aplicativo móvel
 - [ ] Implementação de autenticação e autorização
-- [ ] Integração de serviços de geolocalização
+- [x] Integração de serviços de geolocalização
 - [ ] Implementação de notificações em tempo real
 - [ ] Testes e depuração
 - [ ] Implantação e hospedagem
