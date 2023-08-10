@@ -20,12 +20,12 @@ export class OrderService {
     console.log(createOrderDto);
     const newOrder = this.orderRepository.create({
       orderNumber: createOrderDto.orderNumber,
+      storeUuid: createOrderDto.storeUuid,
       clientName: createOrderDto.clientName,
       price: createOrderDto.price,
       typePayment: createOrderDto.typePayment,
       address: createOrderDto.address,
       latLngAddress: createOrderDto.latLngAddress,
-      storeUuid: createOrderDto.storeUuid,
       status: ORDER_STATUS.CREATED,
     });
     await this.orderRepository.save(newOrder);
@@ -37,8 +37,11 @@ export class OrderService {
     return `This action returns all order`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOrderByUserStoreUuid(storeUuid: string) {
+    const orderByStore = await this.orderRepository.find({
+      where: { storeUuid },
+    });
+    return orderByStore;
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {

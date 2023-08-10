@@ -2,10 +2,9 @@ $primary-color: #f58328;
 $secondary-color: #f58328;
 
 .navBarWrapper {
-  background-color: #ffffff;
+  background-color: transparent;
   margin: 0 auto;
   padding: 0px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 70px;
 
   @media (max-width: 576px) {
@@ -20,7 +19,7 @@ $secondary-color: #f58328;
   .navContainer {
     padding: 0px 20px;
     height: 100%;
-    max-width: 1440px;
+    max-width: 1340px;
     @media (max-width: 576px) {
       padding: 10px 20px;
     }
@@ -44,7 +43,7 @@ $secondary-color: #f58328;
 }
 .navButtons {
   padding: 8px 20px;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .textWhite {
@@ -58,12 +57,22 @@ $secondary-color: #f58328;
   border: 1px solid $primary-color;
   color: white;
   white-space: nowrap;
+  transition: all 0.5s;
+  &:hover {
+    background-color: #f58428df;
+  }
 }
 
 .loginButton {
   background-color: transparent;
   color: $secondary-color;
   border: 1px solid $secondary-color;
+  transition: all 0.5s;
+
+  &:hover {
+    background-color: #f5842824;
+
+  }
 }
 
 .meAuto {
@@ -72,12 +81,17 @@ $secondary-color: #f58328;
 
 .navItem {
   height: 100%;
-
   display: flex;
   gap: 10px;
   align-items: center;
   border-top: 8px solid transparent;
   border-bottom: 4px solid transparent;
+  transition: all 0.4s;
+  color: rgb(0 0 0 / 70%) !important;
+
+  &:hover {
+    color: rgb(0 0 0 / 100%) !important;
+  }
 }
 .navItem:nth-child(3) {
   min-width: 88px;
@@ -85,7 +99,12 @@ $secondary-color: #f58328;
 
 .activeItem {
   width: content;
-  border-bottom: 4px solid $primary-color;
+  font-family: 'PoppinsSemiBold';
+  color: #000 !important;
+  border-bottom: 2px solid $primary-color;
+  &:hover {
+    color: rgb(0 0 0 / 70%) !important;
+  }
 }
 
 .offCanvasBtnContainer {

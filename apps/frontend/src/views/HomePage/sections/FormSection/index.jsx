@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styles from './FormSection.module.scss';
 import {
@@ -15,8 +15,27 @@ import * as Yup from 'yup';
 import { PAYMENTS_METHODS } from '@/constants/payments.constants';
 import latLng from '@/services/latLng.service';
 import orderService from '@/services/order.service';
+import { useOrder } from '@/stores/order.store';
+
+const moneyToPtBrTwoPrecision = (value = '0') => {
+  if (value !== '0' && value !== null) {
+    let newValue = Number(value).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return newValue;
+  }
+  return '0';
+};
 
 const FormSection = ({ userStore }) => {
+  const { findOrderByUserStore } = useOrder();
+  useEffect(() => {
+    findOrderByUserStore(userStore?.uuid);
+  }, [findOrderByUserStore]);
+
   const validationSchema = Yup.object().shape({
     orderNumber: Yup.number().required('Numero do pedido é obrigatório'),
     address: Yup.string()
@@ -34,7 +53,8 @@ const FormSection = ({ userStore }) => {
 
   const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const { register, handleSubmit, formState, reset } = useForm(formOptions);
+  const { register, handleSubmit, formState, reset, setValue } =
+    useForm(formOptions);
   const { errors } = formState;
   const onSubmit = async data => {
     try {
@@ -47,19 +67,31 @@ const FormSection = ({ userStore }) => {
         clientName: data.nameClient,
         address: data.address,
         typePayment: data.typePayment,
-        latLngAddress: latLngResult,
+        latLngAddress: JSON.stringify(latLngResult),
       };
-      console.log(formObj);
       try {
         await orderService.createOrderByUserStore(formObj);
+        findOrderByUserStore(userStore?.uuid);
       } catch (error) {
         console.log(error);
       }
-      //reset();
+      reset();
     } catch (e) {
       console.log(e);
     }
   };
+  const maskCurrency = value => {
+    value = value?.replace(/\D/g, '');
+
+    const parsedNumber = parseFloat(value) / 100;
+
+    if (isNaN(parsedNumber)) return '0';
+
+    return Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(
+      parsedNumber
+    );
+  };
+
   return (
     <Container
       fluid
@@ -190,6 +222,7 @@ const FormSection = ({ userStore }) => {
                   aria-label="Default select example"
                   {...register('typePayment')}
                   isInvalid={!!errors.typePayment}
+                  className={styles.formSelect}
                   style={
                     errors.typePayment?.message && {
                       border: '1px solid red !important',

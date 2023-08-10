@@ -2,6 +2,7 @@ import {
   IsDecimal,
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -10,17 +11,17 @@ import { PAYMENTS_METHODS } from 'src/config/constants/payments_methods_enum';
 import { Store } from 'src/entities/Store.entity';
 
 export class CreateOrderDto {
-  @IsDecimal()
+  @IsNumber()
   @IsOptional()
   public orderNumber: number;
 
-  @IsDecimal()
+  @IsNumber()
   @IsNotEmpty()
   public price: number;
 
-  // @IsString()
-  // @IsOptional()
-  // public description: string;
+  @IsString()
+  @IsOptional()
+  public description: string;
 
   @IsString()
   @IsNotEmpty()
@@ -38,27 +39,27 @@ export class CreateOrderDto {
   @IsOptional()
   public status: ORDER_STATUS;
 
-  // @IsString()
-  // @IsOptional()
-  // public positionMotoboy: string;
+  @IsString()
+  @IsOptional()
+  public positionMotoboy: string;
 
-  // @IsDecimal()
-  // @IsOptional()
-  // public rating: string;
+  @IsDecimal()
+  @IsOptional()
+  public rating: string;
 
   @IsString()
   @IsOptional()
   public clientName: string;
 
-  // @IsString()
-  // @IsOptional()
-  // public clientCellphone: string;
-
-  // @IsString()
-  // @IsOptional()
-  // public deliverymanUuid: string;
+  @IsString()
+  @IsOptional()
+  public clientCellphone: string;
 
   @IsString()
   @IsOptional()
-  public storeUuid: Store;
+  public deliverymanUuid: string;
+
+  @IsString()
+  @IsOptional()
+  public storeUuid: string;
 }

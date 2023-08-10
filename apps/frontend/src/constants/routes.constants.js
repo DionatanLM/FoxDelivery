@@ -4,20 +4,19 @@ import UserIcon from '../icons/UserIcon';
 
 export const ROUTES = [
   { slug: '', label: 'Home', subRoutes: [] },
-
-  {
-    slug: 'planos',
-    label: 'Planos',
-    subRoutes: [],
-  },
   {
     slug: 'sobre-nos',
     label: 'Sobre nós',
     subRoutes: [],
   },
   {
-    slug: 'contato',
-    label: 'Contato',
+    slug: 'beneficios',
+    label: 'Benefícios',
+    subRoutes: [],
+  },
+  {
+    slug: 'entregadores',
+    label: 'Entregadores',
     subRoutes: [],
   },
 ];

@@ -38,6 +38,7 @@ body {
   font-size: 13px !important;
   height: 100%;
   font-family: 'Open Sans', sans-serif !important;
+  overflow-y: hidden;
 }
 .h1,
 .h2,
@@ -168,7 +169,7 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
   color: #fff !important;
 }
 .btn-primary:hover {
-  background-color: #EF8E40 !important;
+  background-color: #ef8e40 !important;
 }
 .btn-outline-primary {
   border-color: #ff516b !important;
@@ -548,7 +549,7 @@ a.text-success-custom:active,
 
 /* Custom text danger*/
 .text-danger-custom {
-  color: #F58328 !important;
+  color: #f58328 !important;
 }
 
 /* CUstom text primary */
@@ -560,7 +561,7 @@ a.text-success-custom:active,
 .osahan-close a,
 .login-main-left a,
 .sidebar-list-link {
-  color: #F58328 !important;
+  color: #f58328 !important;
 }
 
 /* Gray hover with higher specificity */
@@ -588,7 +589,7 @@ a.text-success-custom:active,
 }
 
 .login-main-left a:hover {
-  color: #EF8E40 !important;
+  color: #ef8e40 !important;
 }
 
 .row > * {

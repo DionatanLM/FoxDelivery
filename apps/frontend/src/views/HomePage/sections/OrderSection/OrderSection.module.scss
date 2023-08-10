@@ -1,0 +1,107 @@
+.container {
+  width: 204px;
+  position: absolute;
+  min-height: 780px;
+  right: 32px;
+  top: 156px;
+
+  .buttonGroup {
+    display: flex;
+    width: 100%;
+    border-radius: 0px !important;
+    justify-content: space-between;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 55px;
+      background: #fff;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .deliveryCallButton {
+      border: 1px solid #009442 !important;
+
+      &:hover {
+        background: #009442 !important;
+        svg path {
+          fill: #fff;
+        }
+      }
+    }
+
+    .finishDeliveryButton {
+      border: 1px solid #0082ca !important;
+
+      &:hover {
+        background: #0082ca !important;
+
+        svg path {
+          fill: #fff;
+        }
+      }
+    }
+
+    .cancelDeliveryButton {
+      border: 1px solid #9d0000 !important;
+
+      &:hover {
+        background: #9d0000 !important;
+        svg path {
+          fill: #fff;
+        }
+      }
+    }
+  }
+
+  .listOrderContainer {
+    margin-top: 10px;
+    border-radius: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #fff;
+    height: 70vh;
+    padding: 10px;
+  }
+
+  .cardOrder {
+    display: flex;
+    gap: 10px;
+    border-radius: 8px;
+
+    padding: 10px;
+    height: 54px;
+    align-items: center;
+
+    .textOrder {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      height: 30px;
+      width: 30px;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    span {
+      color: #181818;
+      font-size: 14px;
+      font-family: Poppins;
+      letter-spacing: 0.13px;
+    }
+
+    p {
+      color: #b0b0b0;
+      font-size: 12px;
+      font-family: Poppins;
+      letter-spacing: 0.08px;
+      margin: 0;
+    }
+  }
+}

@@ -19,7 +19,6 @@ import { useRouter } from 'next/router';
 function NavBarLeft() {
   const session = useSession();
   const path = useRouter();
-  console.log(path.route);
   const { data } = session;
 
   return (

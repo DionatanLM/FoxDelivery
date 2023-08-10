@@ -52,7 +52,7 @@ export class Order {
   })
   typePayment: string;
 
-  @Column({ type: 'varchar', name: 'address', nullable: false, length: 100 })
+  @Column({ type: 'varchar', name: 'address', length: 250, nullable: true })
   address: string;
 
   @Column({
@@ -61,9 +61,6 @@ export class Order {
     nullable: false,
   })
   latLngAddress: string;
-
-  @Column({ type: 'varchar', name: 'address', nullable: true, length: 100 })
-  addressComplement: string;
 
   @Column({ type: 'varchar', name: 'client_name', nullable: true, length: 100 })
   clientName: string;
@@ -77,10 +74,11 @@ export class Order {
   clientCellphone: string;
 
   @Column({
-    type: 'json',
+    type: 'longtext',
     name: 'position_motoboy',
+    nullable: false,
   })
-  positionMotoboy: any;
+  positionMotoboy: string;
 
   @Column('int', { name: 'rating' })
   rating: number;
@@ -106,9 +104,19 @@ export class Order {
   @DeleteDateColumn({ name: 'deletedAt' })
   deletedAt: Date | null;
 
-  @JoinColumn([{ name: 'deliveryman_uuid', referencedColumnName: 'uuid' }])
-  deliverymanUuid: Deliveryman;
+  @Column({
+    type: 'varchar',
+    name: 'deliveryman_uuid',
+    nullable: false,
+    length: 36,
+  })
+  deliverymanUuid: string;
 
-  @JoinColumn([{ name: 'store_uuid', referencedColumnName: 'uuid' }])
-  storeUuid: Store;
+  @Column({
+    type: 'varchar',
+    name: 'store_uuid',
+    nullable: false,
+    length: 36,
+  })
+  storeUuid: string;
 }
