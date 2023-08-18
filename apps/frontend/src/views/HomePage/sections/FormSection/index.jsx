@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styles from './FormSection.module.scss';
-import {
-  Button,
-  Col,
-  FloatingLabel,
-  Form,
-  Row,
-  Spinner,
-} from 'react-bootstrap';
+import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -31,13 +24,19 @@ const moneyToPtBrTwoPrecision = (value = '0') => {
 };
 
 const FormSection = ({ userStore }) => {
-  const { findOrderByUserStore } = useOrder();
+  const { orders, findOrderByUserStore } = useOrder();
   useEffect(() => {
     findOrderByUserStore(userStore?.uuid);
   }, [findOrderByUserStore]);
 
   const validationSchema = Yup.object().shape({
-    orderNumber: Yup.number().required('Numero do pedido é obrigatório'),
+    orderNumber: Yup.number()
+      .required('Numero do pedido é obrigatório')
+      .test('numberOrder-validation', 'Não pode ser igual', function (value) {
+        const orderNumbers = orders.map(order => order.orderNumber);
+        return !orderNumbers.includes(value);
+      }),
+
     address: Yup.string()
       .required('Endereço é obrigatório')
       .matches(/\d/, 'Digite um endereço com o número.'),
@@ -52,7 +51,7 @@ const FormSection = ({ userStore }) => {
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };
-
+  console.log(orders.map(order => order.orderNumber));
   const { register, handleSubmit, formState, reset, setValue } =
     useForm(formOptions);
   const { errors } = formState;
@@ -69,9 +68,10 @@ const FormSection = ({ userStore }) => {
         typePayment: data.typePayment,
         latLngAddress: JSON.stringify(latLngResult),
       };
+
       try {
-        await orderService.createOrderByUserStore(formObj);
-        findOrderByUserStore(userStore?.uuid);
+        // await orderService.createOrderByUserStore(formObj);
+        // findOrderByUserStore(userStore?.uuid);
       } catch (error) {
         console.log(error);
       }

@@ -1,16 +1,17 @@
-import { ImageBackground } from 'react-native';
+import { ImageBackground } from 'react-native'
 
-import backgroundImg from '../../assets/backgroundAlt.png';
+import backgroundImg from '../../assets/backgroundHome.png'
 
-import { styles } from './styles';
+import { styles } from './styles'
 
-export function Background() {
+export function Background({ children }) {
   return (
-    <ImageBackground 
-    source={backgroundImg}
-    defaultSource={backgroundImg}
-    style={styles.container}
+    <ImageBackground
+      source={backgroundImg}
+      defaultSource={backgroundImg}
+      style={styles.container}
     >
+      {children}
     </ImageBackground>
-  );
+  )
 }

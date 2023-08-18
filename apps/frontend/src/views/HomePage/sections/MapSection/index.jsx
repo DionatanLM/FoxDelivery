@@ -58,7 +58,7 @@ const MapSection = ({ userStore }) => {
     };
   }
 
-  console.log(orders.map(order => order.latLngAddress));
+  //console.log(orders.map(order => order.latLngAddress));
   return (
     <Container
       fluid
