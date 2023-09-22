@@ -24,13 +24,14 @@ export class AuthService {
   public async login(body: LoginDto): Promise<ResponseLoginDto | never> {
     const { username, password }: LoginDto = body;
     let user = await this.userService.findOneByUsername(username);
+    console.log(user);
     if (!user) {
       user = await this.userService.findOneByCpfCnpj(username);
     }
 
-    if (user && !(user.userRole === 'STORE' || user.userRole === 'ADMIN')) {
-      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
-    }
+    // if (user && !(user.userRole === 'STORE' || user.userRole === 'ADMIN')) {
+    //   throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+    // }
 
     const token = await this.checkUserAndGenToken(user, password);
     await this.userService.insertLastAccess(user);

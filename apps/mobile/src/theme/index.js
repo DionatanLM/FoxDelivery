@@ -3,7 +3,7 @@ export const THEME = {
     BACKGROUND_900: "#252525",
     BACKGROUND_800: "#181818",
 
-    TEXT: "#FFFFFF",
+    TEXT_WHITE: "#FFFFFF",
 
     CAPTION_500: "#71717A",
     CAPTION_400: "#A1A1AA",
