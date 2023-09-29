@@ -1,25 +1,38 @@
-import {
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({ cors: true })
 export class OrderGateway {
-  private users = {};
   @WebSocketServer()
   server: Server;
 
-  handleConnection(client: Socket, ...args: any[]) {
-    this.users[client.id] = { name: 'Dionatan', email: 'dionatan@gmail.com' };
-    //console.log(this.users);
+  private connectedClients: { [key: string]: Socket } = {};
+
+  handleConnection(client: Socket): void {
+    // Quando um entregador se conecta, armazenamos seu socket em um objeto para referência posterior.
+    this.connectedClients[client.id] = client;
+    console.log(`Entregador ${client.id} conectado.`);
+
+    // Aqui você pode realizar ações adicionais quando um entregador se conecta, como autenticação, verificação de identidade, etc.
   }
 
-  @SubscribeMessage('message')
-  handleMessage(client: Socket, payload: any): void {
-    client.emit('receive-message', payload);
+  handleDisconnect(client: Socket): void {
+    // Quando um entregador se desconecta, removemos seu socket da lista de clientes conectados.
+    delete this.connectedClients[client.id];
+    console.log(`Entregador ${client.id} desconectado.`);
+  }
 
-    client.broadcast.emit('receive-message', payload);
+  @SubscribeMessage('locationDelivery')
+  handleLocationUpdate(client: Socket, data: any): void {
+    // Este método é chamado quando o aplicativo do entregador envia uma atualização de localização.
+
+    // Você pode realizar ações aqui com base nos dados da atualização de localização.
+    // Por exemplo, você pode armazenar as atualizações em um banco de dados, notificar o restaurante, etc.
+
+    // Transmita a atualização de localização para outros clientes conectados, como o painel do restaurante.
+    // Você pode usar client.broadcast.emit(...) para transmitir para todos os outros clientes, exceto o remetente.
+    console.log(`Entregador ${data.id} enviou uma atualização de localização.`)
+    console.log(data, 'data')
+    client.broadcast.emit('locationDelivery', data);
   }
 }

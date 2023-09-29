@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styles from './MapSection.module.scss';
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
-import io from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 import { getSession, useSession } from 'next-auth/react';
 import { useOrder } from '@/stores/order.store';
 import MarkerOrder from '@/components/MarkerOrder';
@@ -29,13 +29,21 @@ const MapSection = ({ userStore }) => {
     findOrderByUserStore(userStore?.uuid);
   }, [findOrderByUserStore]);
 
-  const socket = io('http://localhost:8080');
+  const socket = socketIOClient(process.env.NEXT_PUBLIC_API_URL); // Substitua com a URL do servidor do restaurante
 
-  useEffect(() => {
-    socket.on('message', () => {
-      console.log('connectedddd');
-    });
-  }, []);
+  socket.on('connect', () => {
+    console.log('Conectado ao servidor do restaurante');
+  });
+
+  socket.on('locationDelivery', data => {
+    // Lide com as atualizações de localização recebidas do servidor do restaurante
+    console.log('Atualização de localização do entregador:', data);
+    // Atualize o mapa em tempo real ou realize qualquer outra ação necessária
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Desconectado do servidor do restaurante');
+  });
 
   function createCustomMarkerIcon(orderNumber) {
     const canvas = document.createElement('canvas');

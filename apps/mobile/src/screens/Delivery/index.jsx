@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from './styles'
@@ -6,6 +6,7 @@ import OrderCard from '../../components/OrderCard'
 import { useNavigation } from '@react-navigation/native'
 import { Dialog, Portal } from 'react-native-paper'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as Location from 'expo-location'
 
 const DeliveryPage = () => {
   const navigation = useNavigation()
@@ -23,6 +24,27 @@ const DeliveryPage = () => {
     setCurrentOrder(false)
     setVisibleDialog(false)
   }
+
+  useEffect(() => {
+    const socket = socketIOClient('http://192.168.15.154:8080')
+
+    const sendLocationInterval = setInterval(async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        console.error('Permissão para acessar a localização foi negada.')
+        return
+      }
+
+      const location = await Location.getCurrentPositionAsync({})
+      const { latitude, longitude } = location.coords
+
+      socket.emit('locationDelivery', { latitude, longitude, id: '123456'})
+    }, 30000) // 30 segundos
+
+    return () => {
+      clearInterval(sendLocationInterval) // Limpa o intervalo quando o componente é desmontado
+    }
+  }, [])
 
   return (
     <>

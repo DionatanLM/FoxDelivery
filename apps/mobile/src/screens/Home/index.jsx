@@ -45,7 +45,6 @@ const HomePage = () => {
     })()
   }, [])
 
-  console.log(location.coords.latitude, location.coords.longitude, location.coords.speed)
   const arrayDeliveries = [
     {
       id: 1,
