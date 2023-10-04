@@ -1,41 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styles from './FormSection.module.scss';
-import { Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { PAYMENTS_METHODS } from '@/constants/payments.constants';
 import latLng from '@/services/latLng.service';
-import orderService from '@/services/order.service';
 import { useOrder } from '@/stores/order.store';
-
-const moneyToPtBrTwoPrecision = (value = '0') => {
-  if (value !== '0' && value !== null) {
-    let newValue = Number(value).toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    return newValue;
-  }
-  return '0';
-};
+import { maskCurrency } from '@/helpers/currency.helper';
 
 const FormSection = ({ userStore }) => {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [priceValue, setPriceValue] = useState('');
+
   const { orders, findOrderByUserStore } = useOrder();
+
   useEffect(() => {
     findOrderByUserStore(userStore?.uuid);
   }, [findOrderByUserStore]);
 
   const validationSchema = Yup.object().shape({
-    orderNumber: Yup.number()
-      .required('Numero do pedido é obrigatório')
-      .test('numberOrder-validation', 'Não pode ser igual', function (value) {
-        const orderNumbers = orders.map(order => order.orderNumber);
-        return !orderNumbers.includes(value);
-      }),
+    orderNumber: Yup.number().required('Numero do pedido é obrigatório'),
+    // .test('numberOrder-validation', 'Não pode ser igual', function (value) {
+    //   const orderNumbers = orders.map(order => order.orderNumber);
+    //   return !orderNumbers.includes(value);
+    // }),
 
     address: Yup.string()
       .required('Endereço é obrigatório')
@@ -46,15 +37,16 @@ const FormSection = ({ userStore }) => {
       .test('nameClient-validation', 'Não pode ser vazio.', function (value) {
         return value.trim() !== '';
       }),
-    price: Yup.number().required('Valor é obrigatório'),
+    price: Yup.string().required('Valor é obrigatório'),
     typePayment: Yup.string().required('Escolha a forma de pagamento'),
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };
-  console.log(orders.map(order => order.orderNumber));
+  //console.log(orders.map(order => order.orderNumber));
   const { register, handleSubmit, formState, reset, setValue } =
     useForm(formOptions);
   const { errors } = formState;
+
   const onSubmit = async data => {
     try {
       const latLngResult = await latLng(data?.address);
@@ -62,7 +54,7 @@ const FormSection = ({ userStore }) => {
       const formObj = {
         storeUuid: userStore?.uuid,
         orderNumber: data.orderNumber,
-        price: data.price,
+        price: parseFloat(data.price.replace(/[^\d,]/g, '').replace(',', '.')),
         clientName: data.nameClient,
         address: data.address,
         typePayment: data.typePayment,
@@ -70,26 +62,24 @@ const FormSection = ({ userStore }) => {
       };
 
       try {
+        console.log(formObj);
         // await orderService.createOrderByUserStore(formObj);
-        // findOrderByUserStore(userStore?.uuid);
+        //findOrderByUserStore(userStore?.uuid);
+        reset();
       } catch (error) {
-        console.log(error);
+        setErrorMessage(error.response.data.message);
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 5000);
       }
-      reset();
     } catch (e) {
       console.log(e);
     }
   };
-  const maskCurrency = value => {
-    value = value?.replace(/\D/g, '');
 
-    const parsedNumber = parseFloat(value) / 100;
-
-    if (isNaN(parsedNumber)) return '0';
-
-    return Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(
-      parsedNumber
-    );
+  const onChangeCurrency = (field, value) => {
+    return setValue(field, maskCurrency(value));
   };
 
   return (
@@ -103,6 +93,23 @@ const FormSection = ({ userStore }) => {
           className="w-100"
           onSubmit={handleSubmit(onSubmit)}
         >
+          {showAlert && (
+            <Alert
+              className={styles.customAlert}
+              style={{
+                position: 'absolute',
+                zIndex: 10,
+                width: '500px',
+                top: '115px',
+              }}
+              variant="danger"
+              onClose={() => setShowAlert(false)}
+              dismissible
+            >
+              {errorMessage}
+            </Alert>
+          )}
+
           <Form.Group>
             <Row>
               <Col
@@ -196,10 +203,14 @@ const FormSection = ({ userStore }) => {
                   controlId="floatingInput"
                   label="Valor"
                   className={styles.formFloating}
+                  onChange={v =>
+                    onChangeCurrency(v.target.name, v.target.value)
+                  }
+                  
                 >
                   <Form.Control
                     name="price"
-                    type="number"
+                    type="text"
                     placeholder="Valor"
                     {...register('price')}
                     isInvalid={!!errors.price}
@@ -210,6 +221,7 @@ const FormSection = ({ userStore }) => {
                       }
                     }
                   />
+                  <p className={styles.errorText}>{errors.number?.message}</p>
                 </FloatingLabel>
               </Col>
               <Col
@@ -238,11 +250,6 @@ const FormSection = ({ userStore }) => {
                       {payment.name}
                     </option>
                   ))}
-                  {/* <option readOnly>Forma de pagamento</option>
-                  <option value="1">Dinheiro</option>
-                  <option value="2">PIX</option>
-                  <option value="3">Cartão de credito</option>
-                  <option value="4">Cartão de debito</option> */}
                 </Form.Select>
               </Col>
               <Col>

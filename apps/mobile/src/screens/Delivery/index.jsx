@@ -1,50 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import { styles } from './styles'
-import OrderCard from '../../components/OrderCard'
-import { useNavigation } from '@react-navigation/native'
-import { Dialog, Portal } from 'react-native-paper'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import * as Location from 'expo-location'
+import React, { useEffect, useState } from "react";
+import Header from "../../components/Header";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { styles } from "./styles";
+import OrderCard from "../../components/OrderCard";
+import { useNavigation } from "@react-navigation/native";
+import { Dialog, Portal } from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Location from "expo-location";
+import socketIOClient from "socket.io-client";
+import { API_URL } from "@env";
 
 const DeliveryPage = () => {
-  const navigation = useNavigation()
-  const [isSwitchOn, setIsSwitchOn] = useState(false)
-  const [currentOrder, setCurrentOrder] = useState(true)
-  const [visibleDialog, setVisibleDialog] = useState(true)
+  const navigation = useNavigation();
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState(true);
+  const [visibleDialog, setVisibleDialog] = useState(true);
 
-  const hideDialog = () => setVisibleDialog(false)
+  const hideDialog = () => setVisibleDialog(false);
 
   const handleAcceptOrder = () => {
-    setVisibleDialog(false)
-  }
+    setVisibleDialog(false);
+  };
 
   const handleRejectOrder = () => {
-    setCurrentOrder(false)
-    setVisibleDialog(false)
-  }
+    setCurrentOrder(false);
+    setVisibleDialog(false);
+  };
 
   useEffect(() => {
-    const socket = socketIOClient('http://192.168.15.154:8080')
+    const socket = socketIOClient(API_URL);
 
     const sendLocationInterval = setInterval(async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        console.error('Permissão para acessar a localização foi negada.')
-        return
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permissão para acessar a localização foi negada.");
+        return;
       }
 
-      const location = await Location.getCurrentPositionAsync({})
-      const { latitude, longitude } = location.coords
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
 
-      socket.emit('locationDelivery', { latitude, longitude, id: '123456'})
-    }, 30000) // 30 segundos
+      socket.emit("locationDelivery", { latitude, longitude, id: "123456" });
+    }, 30000); // 30 segundos
 
     return () => {
-      clearInterval(sendLocationInterval) // Limpa o intervalo quando o componente é desmontado
-    }
-  }, [])
+      clearInterval(sendLocationInterval); // Limpa o intervalo quando o componente é desmontado
+    };
+  }, []);
 
   return (
     <>
@@ -58,23 +60,23 @@ const DeliveryPage = () => {
         <View
           style={[
             styles.cardDelivery,
-            !currentOrder && styles.cardDeliveryCentered
+            !currentOrder && styles.cardDeliveryCentered,
           ]}
         >
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('Order', {
-                uuid: 'andkjsnfks3fjd',
-                orderNumber: '123456'
+              navigation.navigate("Order", {
+                uuid: "andkjsnfks3fjd",
+                orderNumber: "123456",
               })
             }
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
           >
             <OrderCard
-              status={'Em andamento'}
-              store={'Beer Burger'}
-              address={'Rua das Flores, 19'}
-              orderNumber={'123456'}
+              status={"Em andamento"}
+              store={"Beer Burger"}
+              address={"Rua das Flores, 19"}
+              orderNumber={"123456"}
             />
           </TouchableOpacity>
           {/* <Image
@@ -125,8 +127,8 @@ const DeliveryPage = () => {
                 style={[styles.buttonDialog, styles.buttonAccept]}
               >
                 <MaterialCommunityIcons
-                  name={'check'}
-                  color={'#ffffff'}
+                  name={"check"}
+                  color={"#ffffff"}
                   size={50}
                 />
               </TouchableOpacity>
@@ -135,12 +137,12 @@ const DeliveryPage = () => {
                 style={[
                   styles.buttonDialog,
                   styles.buttonGray,
-                  styles.buttonCancel
+                  styles.buttonCancel,
                 ]}
               >
                 <MaterialCommunityIcons
-                  name={'close'}
-                  color={'#ffffff'}
+                  name={"close"}
+                  color={"#ffffff"}
                   size={50}
                 />
               </TouchableOpacity>
@@ -149,7 +151,7 @@ const DeliveryPage = () => {
         </Dialog>
       </Portal>
     </>
-  )
-}
+  );
+};
 
-export default DeliveryPage
+export default DeliveryPage;

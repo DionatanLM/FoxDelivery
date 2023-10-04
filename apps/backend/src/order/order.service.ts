@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ORDER_REPOSITORY } from 'src/config/constants/providers';
@@ -17,7 +17,16 @@ export class OrderService {
   }
 
   async createOrderByUserStore(createOrderDto: CreateOrderDto) {
-    console.log(createOrderDto);
+    const existingOrder = await this.orderRepository.findOne({
+      where: {
+        orderNumber: createOrderDto.orderNumber,
+        storeUuid: createOrderDto.storeUuid,
+      },
+    });
+    if (existingOrder) {
+      throw new HttpException('Já existe um pedido com esse número', 404);
+    }
+
     const newOrder = this.orderRepository.create({
       orderNumber: createOrderDto.orderNumber,
       storeUuid: createOrderDto.storeUuid,
