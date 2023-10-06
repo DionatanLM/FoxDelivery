@@ -9,6 +9,7 @@ import { PAYMENTS_METHODS } from '@/constants/payments.constants';
 import latLng from '@/services/latLng.service';
 import { useOrder } from '@/stores/order.store';
 import { maskCurrency } from '@/helpers/currency.helper';
+import orderService from '@/services/order.service';
 
 const FormSection = ({ userStore }) => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -42,7 +43,6 @@ const FormSection = ({ userStore }) => {
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };
-  //console.log(orders.map(order => order.orderNumber));
   const { register, handleSubmit, formState, reset, setValue } =
     useForm(formOptions);
   const { errors } = formState;
@@ -62,9 +62,8 @@ const FormSection = ({ userStore }) => {
       };
 
       try {
-        console.log(formObj);
-        // await orderService.createOrderByUserStore(formObj);
-        //findOrderByUserStore(userStore?.uuid);
+        await orderService.createOrderByUserStore(formObj);
+        findOrderByUserStore(userStore?.uuid);
         reset();
       } catch (error) {
         setErrorMessage(error.response.data.message);
@@ -206,7 +205,6 @@ const FormSection = ({ userStore }) => {
                   onChange={v =>
                     onChangeCurrency(v.target.name, v.target.value)
                   }
-                  
                 >
                   <Form.Control
                     name="price"

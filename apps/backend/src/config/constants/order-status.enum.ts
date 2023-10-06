@@ -1,4 +1,5 @@
 export enum ORDER_STATUS {
+  PENDING = 'PENDING',
   CREATED = 'CREATED',
   RECEIVED = 'RECEIVED',
   READY = 'READY',

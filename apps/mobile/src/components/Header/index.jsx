@@ -3,9 +3,11 @@ import { styles } from "./styles";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, Switch } from "react-native-paper";
+import { useUser } from "../../store/user.store";
 
 const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
   const navigation = useNavigation();
+  const { userData } = useUser();
 
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
@@ -23,7 +25,7 @@ const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
               icon="camera"
               style={{ backgroundColor: "green" }}
             />
-            <Text style={styles.profileText}>João da Silva</Text>
+            <Text style={styles.profileText}>{userData?.name}</Text>
           </View>
         </TouchableOpacity>
         {delivery && (

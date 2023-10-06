@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -29,6 +30,28 @@ export class OrderController {
   findAllOrderByStoreUuid(@Param('storeUuid') storeUuid: string) {
     return this.orderService.findOrderByUserStoreUuid(storeUuid);
   }
+
+  @Get('/findDelivery/:storeUuid')
+  findDeliveryForOrder(@Param('storeUuid') storeUuid: string) {
+    return this.orderService.findDeliveryForOrder(storeUuid);
+  }
+
+  // @Get()
+  // async calculateDistance(
+  //   @Query('originLat') originLat: number,
+  //   @Query('originLng') originLng: number,
+  //   @Query('destinationLat') destinationLat: number,
+  //   @Query('destinationLng') destinationLng: number,
+  // ) {
+  //   const distance = await this.orderService.calculateDistanceBetweenTwoPoints(
+  //     originLat,
+  //     originLng,
+  //     destinationLat,
+  //     destinationLng,
+  //   );
+
+  //   return { distance };
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {

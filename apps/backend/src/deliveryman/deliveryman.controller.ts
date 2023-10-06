@@ -8,7 +8,6 @@ import {
   Delete,
 } from '@nestjs/common';
 import { DeliverymanService } from './deliveryman.service';
-import { UpdateDeliveryManDto } from './dto/update-deliveryman.dto';
 import { CreateDeliveryManDto } from './dto/create-deliveryman.dto';
 
 @Controller('deliveryman')
@@ -30,12 +29,9 @@ export class DeliveryManController {
     return this.deliverymanService.findOne(uuid);
   }
 
-  @Patch(':uuid')
-  update(
-    @Param('uuid') uuid: string,
-    @Body() updateDeliveryManDto: UpdateDeliveryManDto,
-  ) {
-    return this.deliverymanService.update(uuid, updateDeliveryManDto);
+  @Get('/username/:username')
+  findDeliveryByUsername(@Param('username') username: string) {
+    return this.deliverymanService.findDeliveryByUsername(username);
   }
 
   @Delete(':uuid')

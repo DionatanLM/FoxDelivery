@@ -9,44 +9,66 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import * as Location from "expo-location";
 import socketIOClient from "socket.io-client";
 import { API_URL } from "@env";
+import { useUser } from "../../store/user.store";
 
 const DeliveryPage = () => {
   const navigation = useNavigation();
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
-  const [currentOrder, setCurrentOrder] = useState(true);
-  const [visibleDialog, setVisibleDialog] = useState(true);
+  const { userData } = useUser();
+  const [isSwitchOn, setIsSwitchOn] = useState(userData?.isActive);
+  const [currentOrder, setCurrentOrder] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [newOrder, setNewOrder] = useState();
+  const socket = socketIOClient(API_URL, {
+    reconnection: true,
+    reconnectionAttempts: Infinity,
+  });
 
-  const hideDialog = () => setVisibleDialog(false);
+  const hideDialog = () => setShowOrderModal(false);
 
   const handleAcceptOrder = () => {
-    setVisibleDialog(false);
+    setShowOrderModal(false);
+    //setCurrentOrder(true);
+    const obj = {
+      socketId: newOrder.socketId,
+      response: "accept",
+    };
+    socket.emit("deliveryman-response", obj);
   };
 
   const handleRejectOrder = () => {
     setCurrentOrder(false);
-    setVisibleDialog(false);
+    setShowOrderModal(false);
+    const obj = {
+      socketId: socket.id,
+      response: "reject",
+    };
+    socket.emit("deliveryman-response", obj);
+    setNewOrder(null);
   };
 
   useEffect(() => {
-    const socket = socketIOClient(API_URL);
-
-    const sendLocationInterval = setInterval(async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.error("Permissão para acessar a localização foi negada.");
-        return;
+    socket.emit("join-deliveryman", userData?.uuid);
+    socket.on("new-order", (data) => {
+      if (data) {
+        setNewOrder(data);
+        setShowOrderModal(true);
       }
-
-      const location = await Location.getCurrentPositionAsync({});
+    });
+    Location.getCurrentPositionAsync({}).then((location) => {
       const { latitude, longitude } = location.coords;
-
-      socket.emit("locationDelivery", { latitude, longitude, id: "123456" });
-    }, 30000); // 30 segundos
-
-    return () => {
-      clearInterval(sendLocationInterval); // Limpa o intervalo quando o componente é desmontado
-    };
+      // socket.emit("locationDelivery", { latitude, longitude, id: "123456" });
+    });
+    return () => {};
   }, []);
+
+  useEffect(() => {
+    socket.on("new-order", (data) => {
+      if (data) {
+        setNewOrder(data);
+        setShowOrderModal(true);
+      }
+    });
+  }, [socket]);
 
   return (
     <>
@@ -63,7 +85,7 @@ const DeliveryPage = () => {
             !currentOrder && styles.cardDeliveryCentered,
           ]}
         >
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               navigation.navigate("Order", {
                 uuid: "andkjsnfks3fjd",
@@ -78,29 +100,29 @@ const DeliveryPage = () => {
               address={"Rua das Flores, 19"}
               orderNumber={"123456"}
             />
-          </TouchableOpacity>
-          {/* <Image
+          </TouchableOpacity> */}
+          <Image
             source={
               isSwitchOn
-                ? require('./assets/delivery-helmet.png')
-                : require('./assets/coffee-bold.png')
+                ? require("./assets/delivery-helmet.png")
+                : require("./assets/coffee-bold.png")
             }
             style={styles.image}
           />
           <Text style={styles.title}>
-            {isSwitchOn ? 'Disponivel' : 'Indisponivel'}
+            {isSwitchOn ? "Disponivel" : "Indisponivel"}
           </Text>
           <Text style={styles.subTitle}>
             {!isSwitchOn
-              ? 'Toque no botão para voltar a receber entregas'
-              : 'Nenhuma entrega em andamento, Para ficar indisponivel, toque no botão.'}
-          </Text> */}
+              ? "Toque no botão para voltar a receber entregas"
+              : "Nenhuma entrega em andamento, Para ficar indisponivel, toque no botão."}
+          </Text>
         </View>
       </ScrollView>
 
       <Portal>
         <Dialog
-          visible={visibleDialog}
+          visible={showOrderModal}
           onDismiss={hideDialog}
           dismissable={false}
           style={styles.dialog}
@@ -114,7 +136,8 @@ const DeliveryPage = () => {
             <View style={styles.dialogBody}>
               <Text style={styles.dialogBodyText}>R$ 17,30</Text>
               <Text style={styles.dialogBodyDescription}>
-                Percurso total de 7km
+                Percurso total de{" "}
+                {parseFloat(newOrder?.totalDistance).toFixed(2)}km
               </Text>
             </View>
 
@@ -123,7 +146,7 @@ const DeliveryPage = () => {
                 Clique em um dos botões...
               </Text>
               <TouchableOpacity
-                onPress={handleAcceptOrder}
+                onPress={() => handleAcceptOrder()}
                 style={[styles.buttonDialog, styles.buttonAccept]}
               >
                 <MaterialCommunityIcons
@@ -133,7 +156,7 @@ const DeliveryPage = () => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={handleRejectOrder}
+                onPress={() => handleRejectOrder()}
                 style={[
                   styles.buttonDialog,
                   styles.buttonGray,

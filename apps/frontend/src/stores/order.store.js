@@ -13,7 +13,6 @@ export const useOrder = create((set, get) => ({
       const userByUuidResult = await orderService.findOrderByUserStore(
         uuidStore
       );
-      //console.log(userByUuidResult);
       set({
         orders: userByUuidResult,
       });
