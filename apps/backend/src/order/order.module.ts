@@ -9,7 +9,7 @@ import { deliveryManProviders } from 'src/deliveryman/deliveryman.providers';
 import { Server } from 'socket.io';
 import { DELIVERYMAN_SOCKETS } from 'src/config/constants/providers';
 
-const deliverymanSocketsMap = new Map<string, string>(); // Crie e configure seu Map aqui
+const deliverymanSocketsMap = new Map<string, string>();
 
 @Module({
   imports: [DatabaseModule],

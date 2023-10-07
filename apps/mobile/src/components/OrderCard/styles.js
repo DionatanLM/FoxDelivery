@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.4,
     shadowRadius: 3,
+    elevation: 3,
   },
   header: {
     backgroundColor: THEME.COLORS.PRIMARY,

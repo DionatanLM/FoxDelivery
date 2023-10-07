@@ -4,12 +4,23 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, Switch } from "react-native-paper";
 import { useUser } from "../../store/user.store";
+import userService from "../../services/user.service";
 
 const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
   const navigation = useNavigation();
   const { userData } = useUser();
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = async () => {
+    setIsSwitchOn(!isSwitchOn);
+    try {
+      const obj = {
+        isActive: !isSwitchOn,
+      };
+      await userService.updateIsActive(userData?.uuid, obj);
+    } catch (err) {
+      setIsSwitchOn(!isSwitchOn);
+    }
+  };
 
   const goToProfile = () => {
     navigation.navigate("Perfil");

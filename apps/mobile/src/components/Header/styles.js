@@ -14,13 +14,17 @@ export const styles = StyleSheet.create({
     backgroundColor: "#F58328",
     position: "absolute",
     marginLeft: -25,
-    marginTop: -360,
+    marginTop: -350,
   },
+
   profileContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 25,
+    paddingTop: 60,
+    marginBottom: -25,
   },
   profile: {
     display: "flex",

@@ -22,7 +22,7 @@ const AppRoutes = () => {
   }, []);
   return (
     <Navigator screenOptions={{ headerShown: false }} initialRouteName="Tabs">
-      <Screen name="Home" component={Home} />
+      <Screen name="HomePage" component={Home} />
       <Screen name="Perfil" component={ProfilePage} />
       <Screen name="Order" component={OrderPage} />
     </Navigator>

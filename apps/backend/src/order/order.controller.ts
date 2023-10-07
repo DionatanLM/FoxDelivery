@@ -31,27 +31,17 @@ export class OrderController {
     return this.orderService.findOrderByUserStoreUuid(storeUuid);
   }
 
+  @Get('/deliveryman/:deliveryManUuid')
+  findOrderByDeliverymanUuid(
+    @Param('deliveryManUuid') deliveryManUuid: string,
+  ) {
+    return this.orderService.findOrderByDeliverymanUuid(deliveryManUuid);
+  }
+
   @Get('/findDelivery/:storeUuid')
   findDeliveryForOrder(@Param('storeUuid') storeUuid: string) {
     return this.orderService.findDeliveryForOrder(storeUuid);
   }
-
-  // @Get()
-  // async calculateDistance(
-  //   @Query('originLat') originLat: number,
-  //   @Query('originLng') originLng: number,
-  //   @Query('destinationLat') destinationLat: number,
-  //   @Query('destinationLng') destinationLng: number,
-  // ) {
-  //   const distance = await this.orderService.calculateDistanceBetweenTwoPoints(
-  //     originLat,
-  //     originLng,
-  //     destinationLat,
-  //     destinationLng,
-  //   );
-
-  //   return { distance };
-  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {

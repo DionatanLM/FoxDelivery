@@ -46,6 +46,13 @@ export class OrderService {
     return orderByStore;
   }
 
+  async findOrderByDeliverymanUuid(deliverymanUuid: string) {
+    const orderByDeliveryman = await this.orderRepository.find({
+      where: { deliverymanUuid },
+    });
+    return orderByDeliveryman;
+  }
+
   //Cria um novo pedido para uma loja específica e atribui o entregador mais próximo disponível.
   async createOrderByUserStore(createOrderDto: CreateOrderDto) {
     const existingOrder = await this.orderRepository.findOne({
@@ -61,6 +68,7 @@ export class OrderService {
     const closestDeliveryman = await this.findDeliveryForOrder(
       createOrderDto.storeUuid,
     );
+    console.log(closestDeliveryman);
     const calculateDistanceByStore = await this.calculateDistanceFromStore(
       createOrderDto.storeUuid,
       createOrderDto.latLngAddress,
@@ -93,10 +101,12 @@ export class OrderService {
         try {
           const result = await this.waitForDeliverymanResponse(
             deliverymanSocketId,
+            newOrder.uuid,
           );
 
           // Atualizar o pedido com base na resposta do entregador
           if ((result as { response?: string }).response === 'accept') {
+            console.log('entregador aceitou o pedido');
             newOrder.status = ORDER_STATUS.RECEIVED;
             newOrder.acceptedByDeliveryman = 1;
             newOrder.deliverymanUuid = closestDeliveryman.uuid;
@@ -112,7 +122,7 @@ export class OrderService {
   }
 
   // Função para aguardar a resposta do entregador
-  async waitForDeliverymanResponse(deliverymanSocketId) {
+  async waitForDeliverymanResponse(deliverymanSocketId, orderUuid) {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         clearInterval(interval); // Cancela o intervalo, pois o tempo limite foi excedido
@@ -120,7 +130,13 @@ export class OrderService {
       }, 60000); // Tempo limite de 60 segundos (ajuste conforme necessário)
 
       const interval = setInterval(() => {
-        if (this.orderGateway.responsePromises[deliverymanSocketId]) {
+        // VERIFICAR SE É O MESMO deliverymanSocketId e o mesmo orderUuid
+
+        if (
+          this.orderGateway.responsePromises[deliverymanSocketId] &&
+          this.orderGateway.responsePromises[deliverymanSocketId].orderUuid ===
+            orderUuid
+        ) {
           clearTimeout(timeout); // Cancela o timeout, pois a resposta foi recebida
           const response =
             this.orderGateway.responsePromises[deliverymanSocketId];

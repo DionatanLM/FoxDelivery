@@ -15,14 +15,14 @@ const DeliveryPage = () => {
   const navigation = useNavigation();
   const { userData } = useUser();
   const [isSwitchOn, setIsSwitchOn] = useState(userData?.isActive);
-  const [currentOrder, setCurrentOrder] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState(true);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [newOrder, setNewOrder] = useState();
   const socket = socketIOClient(API_URL, {
     reconnection: true,
     reconnectionAttempts: Infinity,
   });
-
+  console.log(isSwitchOn)
   const hideDialog = () => setShowOrderModal(false);
 
   const handleAcceptOrder = () => {
@@ -30,6 +30,7 @@ const DeliveryPage = () => {
     //setCurrentOrder(true);
     const obj = {
       socketId: newOrder.socketId,
+      orderUuid: newOrder.uuid,
       response: "accept",
     };
     socket.emit("deliveryman-response", obj);
@@ -78,45 +79,46 @@ const DeliveryPage = () => {
           setIsSwitchOn={setIsSwitchOn}
           isSwitchOn={isSwitchOn}
         />
-
-        <View
-          style={[
-            styles.cardDelivery,
-            !currentOrder && styles.cardDeliveryCentered,
-          ]}
-        >
-          {/* <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Order", {
-                uuid: "andkjsnfks3fjd",
-                orderNumber: "123456",
-              })
-            }
-            style={{ width: "100%" }}
+        <View style={styles.padding}>
+          <View
+            style={[
+              styles.cardDelivery,
+              !currentOrder && styles.cardDeliveryCentered,
+            ]}
           >
-            <OrderCard
-              status={"Em andamento"}
-              store={"Beer Burger"}
-              address={"Rua das Flores, 19"}
-              orderNumber={"123456"}
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Order", {
+                  uuid: "andkjsnfks3fjd",
+                  orderNumber: "123456",
+                })
+              }
+              style={{ width: "100%" }}
+            >
+              <OrderCard
+                status={"Em andamento"}
+                store={"Beer Burger"}
+                address={"Rua das Flores, 19"}
+                orderNumber={"123456"}
+              />
+            </TouchableOpacity>
+            {/* <Image
+              source={
+                isSwitchOn
+                  ? require("./assets/delivery-helmet.png")
+                  : require("./assets/coffee-bold.png")
+              }
+              style={styles.image}
             />
-          </TouchableOpacity> */}
-          <Image
-            source={
-              isSwitchOn
-                ? require("./assets/delivery-helmet.png")
-                : require("./assets/coffee-bold.png")
-            }
-            style={styles.image}
-          />
-          <Text style={styles.title}>
-            {isSwitchOn ? "Disponivel" : "Indisponivel"}
-          </Text>
-          <Text style={styles.subTitle}>
-            {!isSwitchOn
-              ? "Toque no botão para voltar a receber entregas"
-              : "Nenhuma entrega em andamento, Para ficar indisponivel, toque no botão."}
-          </Text>
+            <Text style={styles.title}>
+              {isSwitchOn ? "Disponivel" : "Indisponivel"}
+            </Text>
+            <Text style={styles.subTitle}>
+              {!isSwitchOn
+                ? "Toque no botão para voltar a receber entregas"
+                : "Nenhuma entrega em andamento, Para ficar indisponivel, toque no botão."}
+            </Text> */}
+          </View>
         </View>
       </ScrollView>
 

@@ -17,8 +17,21 @@ const getUser = async () => {
   }
 };
 
+const updateIsActive = async (id, data) => {
+  try {
+    const response = await axios.patch(
+      `${API_URL}/deliveryman/availability/${id}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const userService = {
   getUser,
+  updateIsActive
 };
 
 export default userService;

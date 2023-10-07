@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { DeliverymanService } from './deliveryman.service';
 import { CreateDeliveryManDto } from './dto/create-deliveryman.dto';
+import { UpdateAvailabilityDto } from './dto/update-availability.dto';
 
 @Controller('deliveryman')
 export class DeliveryManController {
@@ -32,6 +33,17 @@ export class DeliveryManController {
   @Get('/username/:username')
   findDeliveryByUsername(@Param('username') username: string) {
     return this.deliverymanService.findDeliveryByUsername(username);
+  }
+
+  @Patch('/availability/:uuid')
+  updateAvailability(
+    @Param('uuid') uuid: string,
+    @Body() updateAvailabilityDto: UpdateAvailabilityDto,
+  ) {
+    return this.deliverymanService.updateAvailability(
+      uuid,
+      updateAvailabilityDto.isActive,
+    );
   }
 
   @Delete(':uuid')
