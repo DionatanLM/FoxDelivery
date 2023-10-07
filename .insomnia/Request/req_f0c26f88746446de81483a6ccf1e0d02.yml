@@ -1,0 +1,21 @@
+_id: req_f0c26f88746446de81483a6ccf1e0d02
+type: Request
+parentId: fld_5d74246a81fc407492f08bab605ebab1
+modified: 1688021085583
+created: 1688019120342
+url: "{{ _.BASE_URL }}/order/store/f01fbe4e-74da-4c65-b3c0-300cbeac6f64"
+name: get
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1687745041224
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

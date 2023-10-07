@@ -1,0 +1,21 @@
+_id: req_836e902451a14a9c949e5da8333420f7
+type: Request
+parentId: fld_40ce105f8fbf48088ee933b417bb6667
+modified: 1695419782634
+created: 1687241212172
+url: "{{ _.BASE_URL }}/user/store/4c9ff49f-216a-437c-a164-8fda028f43d2"
+name: findStoreByUserId
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1686103337634.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

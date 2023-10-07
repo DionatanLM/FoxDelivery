@@ -1,0 +1,38 @@
+_id: req_8c8e6dc0e55a4b6787614665209e02b6
+type: Request
+parentId: fld_40ce105f8fbf48088ee933b417bb6667
+modified: 1693919633552
+created: 1686111958001
+url: "{{ _.BASE_URL }}/user"
+name: create | deliveryman
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    	{
+    		"name": "Otavio Taverez",
+    		"username": "otavios@hotmail.com",
+    		"password": "Teste@1",
+    		"userRole": "DELIVERYMAN",
+    		"birthdate": "14/02/2002",
+    		"cellphone": "48999334422",
+    		"cpf": "12576335221",
+    		"cnh": "31243422",
+    		"postalCode": "8805243",
+    		"address": "Rua taltal",
+    		"neighborhood": "Ingleses"
+    	}
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1686103337597
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

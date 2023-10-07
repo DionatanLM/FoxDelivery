@@ -1,0 +1,29 @@
+_id: req_1be6a4d43bdf45aba1dcef461b316b16
+type: Request
+parentId: fld_0578ab9c11424a78b97e39345c28b3fc
+modified: 1693921040103
+created: 1686103123498
+url: "{{ _.BASE_URL }}/auth/login"
+name: auth/login
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    "username": "pedro@hotmail.com",
+     "password": "Teste@1"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1686103123498
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

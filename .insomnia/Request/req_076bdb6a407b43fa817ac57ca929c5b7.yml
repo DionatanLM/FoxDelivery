@@ -1,0 +1,40 @@
+_id: req_076bdb6a407b43fa817ac57ca929c5b7
+type: Request
+parentId: fld_40ce105f8fbf48088ee933b417bb6667
+modified: 1687238098456
+created: 1686167208190
+url: "{{ _.BASE_URL }}/user"
+name: create | store
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    	{
+    		"name": "Pizza em casa",
+    		"responsibleName": "José Augusto da Silva",
+    		"username": "jose@hotmail.com",
+    		"password": "Teste@1",
+    		"userRole": "STORE",
+    		"cellphone": "4899930111",
+    		"category": "PIZZARIA",
+    		"cnpj": "1231238002",
+    		"postalCode": "88052321",
+    		"address": "Rua da Santa Monica",
+    		"lat": "-27.589481",
+    		"lng": "-48.508991",
+    		"neighborhood": "Centro"
+    	}
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1686103337547
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

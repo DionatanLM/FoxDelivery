@@ -1,0 +1,23 @@
+_id: req_372b577f41714b00aaa02d62e1b9a898
+type: Request
+parentId: fld_7ec22dedeb8f4c3b83f0ad95a5733c12
+modified: 1696488506239
+created: 1696466759984
+url: "{{ _.BASE_URL }}/deliveryman"
+name: getAll
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1696466759984
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

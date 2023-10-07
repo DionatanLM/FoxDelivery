@@ -1,0 +1,31 @@
+_id: req_e924da0346e3496abfb4a52212c811d0
+type: Request
+parentId: fld_7ec22dedeb8f4c3b83f0ad95a5733c12
+modified: 1696642489470
+created: 1696642271781
+url: "{{ _.BASE_URL
+  }}/deliveryman/availability/79d695e8-205b-4382-9597-9a3be7adcb1d"
+name: update isActive
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"isActive": true
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1696642271781
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

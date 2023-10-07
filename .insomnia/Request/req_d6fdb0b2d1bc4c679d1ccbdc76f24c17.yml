@@ -1,0 +1,23 @@
+_id: req_d6fdb0b2d1bc4c679d1ccbdc76f24c17
+type: Request
+parentId: fld_5d74246a81fc407492f08bab605ebab1
+modified: 1696467572665
+created: 1696467501715
+url: "{{ _.BASE_URL }}/order/findDelivery/f01fbe4e-74da-4c65-b3c0-300cbeac6f64"
+name: findOrderByDeliveryMan
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1696467501715
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

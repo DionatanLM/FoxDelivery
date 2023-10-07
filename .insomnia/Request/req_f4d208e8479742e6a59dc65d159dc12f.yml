@@ -1,0 +1,38 @@
+_id: req_f4d208e8479742e6a59dc65d159dc12f
+type: Request
+parentId: fld_0578ab9c11424a78b97e39345c28b3fc
+modified: 1686178902408
+created: 1686178663241
+url: "{{ _.BASE_URL }}/auth/register"
+name: auth/register | STORE
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "Tacos Mexicano",
+    	"responsibleName": "Carlos da Silva",
+    	"username": "carlos@hotmail.com",
+    	"password": "Teste@1",
+    	"userRole": "STORE",
+    	"cellphone": "4899931918",
+    	"category": "MEXICANA",
+    	"cnpj": "1231233131",
+    	"postalCode": "8805222",
+    	"address": "Rua da monica",
+    	"neighborhood": "Centro"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1686103123448
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,34 @@
+_id: req_9bcd81ee9d5f48d487499e9db413f65e
+type: Request
+parentId: fld_5d74246a81fc407492f08bab605ebab1
+modified: 1696450222783
+created: 1687745041274
+url: "{{ _.BASE_URL }}/order/store"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"address": "Rua tal",
+    	"orderNumber": 200,
+    	"clientName": "Dionatan",
+    	"price": 12,
+    	"typePayment": "PIX",
+    	"storeUuid": "f01fbe4e-74da-4c65-b3c0-300cbeac6f64",
+    	"latLngAddress": "{'lat': -27.4383953, 'lng': -48.49194749999999}"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1687745041274
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

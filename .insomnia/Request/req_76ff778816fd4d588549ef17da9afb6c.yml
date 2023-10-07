@@ -1,0 +1,30 @@
+_id: req_76ff778816fd4d588549ef17da9afb6c
+type: Request
+parentId: fld_40ce105f8fbf48088ee933b417bb6667
+modified: 1686103458835
+created: 1686103337647
+url: "{{ _.BASE_URL }}/user"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    	{
+    		"name": "João da Silva",
+    		"username": "joao@hotmail.com",
+    		"password": "Teste@1"
+    	}
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1686103337647
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
