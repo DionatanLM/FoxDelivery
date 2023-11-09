@@ -10,14 +10,18 @@ import * as Location from "expo-location";
 import socketIOClient from "socket.io-client";
 import { API_URL } from "@env";
 import { useUser } from "../../store/user.store";
+import { useOrder } from "../../store/order.store";
+import { ORDER_STATUS } from "../../constants/order.constants";
 
 const DeliveryPage = () => {
   const navigation = useNavigation();
   const { userData } = useUser();
   const [isSwitchOn, setIsSwitchOn] = useState(userData?.isActive);
-  const [currentOrder, setCurrentOrder] = useState(true);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [newOrder, setNewOrder] = useState();
+
+  const { orders, findOrderByDeliveryman } = useOrder();
+
   const socket = socketIOClient(API_URL, {
     reconnection: true,
     reconnectionAttempts: Infinity,
@@ -27,7 +31,6 @@ const DeliveryPage = () => {
 
   const handleAcceptOrder = () => {
     setShowOrderModal(false);
-    //setCurrentOrder(true);
     const obj = {
       socketId: newOrder.socketId,
       orderUuid: newOrder.uuid,
@@ -37,7 +40,6 @@ const DeliveryPage = () => {
   };
 
   const handleRejectOrder = () => {
-    setCurrentOrder(false);
     setShowOrderModal(false);
     const obj = {
       socketId: socket.id,
@@ -71,6 +73,12 @@ const DeliveryPage = () => {
     });
   }, [socket]);
 
+  useEffect(() => {
+    if (userData?.uuid) {
+      findOrderByDeliveryman(userData?.uuid);
+    }
+  }, [newOrder]);
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -78,46 +86,50 @@ const DeliveryPage = () => {
           delivery
           setIsSwitchOn={setIsSwitchOn}
           isSwitchOn={isSwitchOn}
+          orders={orders}
         />
         <View style={styles.padding}>
           <View
             style={[
               styles.cardDelivery,
-              !currentOrder && styles.cardDeliveryCentered,
+              orders.length === 0 && styles.cardDeliveryCentered,
             ]}
           >
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Order", {
-                  uuid: "andkjsnfks3fjd",
-                  orderNumber: "123456",
-                })
-              }
-              style={{ width: "100%" }}
-            >
-              <OrderCard
-                status={"Em andamento"}
-                store={"Beer Burger"}
-                address={"Rua das Flores, 19"}
-                orderNumber={"123456"}
-              />
-            </TouchableOpacity>
-            {/* <Image
-              source={
-                isSwitchOn
-                  ? require("./assets/delivery-helmet.png")
-                  : require("./assets/coffee-bold.png")
-              }
-              style={styles.image}
-            />
-            <Text style={styles.title}>
-              {isSwitchOn ? "Disponivel" : "Indisponivel"}
-            </Text>
-            <Text style={styles.subTitle}>
-              {!isSwitchOn
-                ? "Toque no botão para voltar a receber entregas"
-                : "Nenhuma entrega em andamento, Para ficar indisponivel, toque no botão."}
-            </Text> */}
+            {!orders ? (
+              orders.map((order, index) => (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Order", { order })}
+                  style={{ width: "100%", marginBottom: 20 }}
+                  key={index}
+                >
+                  <OrderCard
+                    status={ORDER_STATUS[order.status]}
+                    store={order.store.name}
+                    address={order.address}
+                    orderNumber={order.orderNumber}
+                  />
+                </TouchableOpacity>
+              ))
+            ) : (
+              <>
+                <Image
+                  source={
+                    isSwitchOn
+                      ? require("./assets/delivery-helmet.png")
+                      : require("./assets/coffee-bold.png")
+                  }
+                  style={styles.image}
+                />
+                <Text style={styles.title}>
+                  {isSwitchOn ? "Disponivel" : "Indisponivel"}
+                </Text>
+                <Text style={styles.subTitle}>
+                  {!isSwitchOn
+                    ? "Toque no botão para voltar a receber entregas"
+                    : "Nenhuma entrega em andamento, aguarde para receber novas entregas"}
+                </Text>
+              </>
+            )}
           </View>
         </View>
       </ScrollView>

@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { styles } from "./styles";
+import { styles } from "../ContentStep/styles";
 import MapView, { Marker } from "react-native-maps";
 import openMaps from "react-native-open-maps";
 import { moneyToPtBrTwoPrecision } from "../../../../helpers/masks.helper";
 
-const ContentStep = ({ order }) => {
+const ContentStepTwo = ({ order }) => {
   const openMapApp = () => {
     openMaps({
       query: "Localização Predefinida",
@@ -16,24 +16,20 @@ const ContentStep = ({ order }) => {
     });
   };
 
-  const coordinates = {
-    lat: parseFloat(order.store.lat),
-    lng: parseFloat(order.store.lng),
-  };
+  const coordinates = JSON.parse(order.latLngAddress);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>PARADA NÚMERO 1 - COLETA</Text>
+        <Text style={styles.title}>PARADA NÚMERO 2 - ENTREGA</Text>
         <Text style={styles.subTitle}>CHEGAR ATÉ 20:31</Text>
       </View>
 
       <View style={styles.textContainer}>
         <Text style={styles.text}>
-          <Text style={styles.boldText}>Estabelecimento:</Text>{" "}
-          {order.store.name}
+          <Text style={styles.boldText}>Nome do cliente:</Text>{" "}
+          {order.clientName}
         </Text>
-
         <Text style={styles.text}>
           <Text style={styles.boldText}>Endereço:</Text> {order.address}
         </Text>
@@ -86,4 +82,4 @@ const ContentStep = ({ order }) => {
   );
 };
 
-export default ContentStep;
+export default ContentStepTwo;

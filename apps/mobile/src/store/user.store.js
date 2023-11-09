@@ -1,40 +1,18 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { create } from "zustand";
 import userService from "../services/user.service";
 
-export const UserContext = createContext({});
-
-export const UserProvider = ({ children }) => {
-  const [userData, setUserData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadStorageData();
-  }, []);
-
-  async function loadStorageData() {
+export const useUser = create((set, get) => ({
+  userData: null,
+  isLoading: false,
+  loadStorageData: async () => {
+    set({ isLoading: true });
     try {
       const result = await userService.getUser();
-      if (result) {
-        setUserData(result);
-      }
+      set({ userData: result });
     } catch (error) {
+      // Trate o erro conforme necessário
     } finally {
-      setIsLoading(false);
+      set({ isLoading: false });
     }
-  }
-  return (
-    <UserContext.Provider value={{ userData, isLoading, loadStorageData }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-export function useUser() {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("useUser must be used within an AuthProvider");
-  }
-
-  return context;
-}
+  },
+}));

@@ -36,10 +36,45 @@ export class OrderService {
   }
 
   async findOrderByDeliverymanUuid(deliverymanUuid: string) {
-    const orderByDeliveryman = await this.orderRepository.find({
+    const orders = await this.orderRepository.find({
       where: { deliverymanUuid },
     });
-    return orderByDeliveryman;
+
+    // Array para armazenar os detalhes do pedido junto com os detalhes da loja
+    const ordersWithStoreDetails = [];
+
+    for (const order of orders) {
+      const store = await this.storeRepository.findOne({
+        where: { uuid: order.storeUuid },
+      });
+
+      // Se a loja correspondente for encontrada, adicione os detalhes ao pedido
+      if (store) {
+        const orderWithStore = {
+          uuid: order.uuid,
+          clientName: order.clientName,
+          address: order.address,
+          description: order.description,
+          orderNumber: order.orderNumber,
+          clientCellphone: order.clientCellphone,
+          latLngAddress: order.latLngAddress,
+          price: order.price,
+          typePayment: order.typePayment,
+          status: order.status,
+          store: {
+            name: store.name,
+            address: store.address,
+            lat: store.lat,
+            lng: store.lng,
+          },
+        };
+        ordersWithStoreDetails.push(orderWithStore);
+      } else {
+        ordersWithStoreDetails.push(order); // Se não encontrar a loja, adicione o pedido sem os detalhes da loja
+      }
+    }
+
+    return ordersWithStoreDetails;
   }
 
   //Cria um novo pedido para uma loja específica e atribui o entregador mais próximo disponível.

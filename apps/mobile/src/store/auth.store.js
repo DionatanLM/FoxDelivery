@@ -1,60 +1,35 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import authService from "../services/auth.service";
 import { Alert } from "react-native";
+import { create } from "zustand";
+import authService from "../services/auth.service";
 
-export const AuthContext = createContext({});
-
-export const AuthProvider = ({ children }) => {
-  const [authData, setAuthData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadStorageData();
-  }, []);
-
-  async function loadStorageData() {
-    try {
-      const authDataSerialized = await AsyncStorage.getItem("@AuthData");
-      if (authDataSerialized) {
-        const _authData = JSON.parse(authDataSerialized);
-        setAuthData(_authData);
-      }
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const signIn = async (data) => {
+export const useAuth = create((set) => ({
+  authData: null,
+  isLoading: true,
+  signIn: async (data) => {
     try {
       const authData = await authService.login(data);
-
-      setAuthData(authData);
+      set({ authData });
       await AsyncStorage.setItem("@AuthData", JSON.stringify(authData));
     } catch (error) {
       Alert.alert(error.message, "Tente novamente");
     }
-  };
-
-  const signOut = async () => {
-    setAuthData(undefined);
+  },
+  signOut: async () => {
+    set({ authData: null });
     await AsyncStorage.removeItem("@AuthData");
-  };
-
-  return (
-    <AuthContext.Provider value={{ authData, signIn, signOut, isLoading }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-
-  return context;
-}
+  },
+  loadStorageData: async () => {
+    try {
+      const authDataSerialized = await AsyncStorage.getItem("@AuthData");
+      if (authDataSerialized) {
+        const _authData = JSON.parse(authDataSerialized);
+        set({ authData: _authData });
+      }
+    } catch (error) {
+      // Trate o erro conforme necessário
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+}));

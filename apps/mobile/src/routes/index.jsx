@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AppRoutes from "./app.routes";
 import { AuthRoutes } from "./auth.routes";
@@ -7,7 +7,11 @@ import { ActivityIndicator } from "react-native-paper";
 import { THEME } from "../theme";
 
 export function Routes() {
-  const { authData, isLoading } = useAuth();
+  const { authData, isLoading, loadStorageData } = useAuth();
+
+  useEffect(() => {
+    loadStorageData();
+  }, []);
 
   return (
     <NavigationContainer>

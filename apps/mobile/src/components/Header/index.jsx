@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import { styles } from "./styles";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, Switch } from "react-native-paper";
 import { useUser } from "../../store/user.store";
 import userService from "../../services/user.service";
 
-const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
+const Header = ({ delivery, isSwitchOn, setIsSwitchOn, orders }) => {
   const navigation = useNavigation();
-  const {userData, loadStorageData } = useUser();
+  const { userData, loadStorageData } = useUser();
 
   const onToggleSwitch = async () => {
+    if (isSwitchOn && orders.length > 0) {
+      Alert.alert(
+        "Você ainda tem pedidos pendentes.",
+        "Por favor, complete suas entregas antes de ficar offline."
+      );
+      return;
+    }
     setIsSwitchOn(!isSwitchOn);
+
     try {
       const obj = {
         isActive: !isSwitchOn,
