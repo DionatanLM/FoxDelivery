@@ -31,13 +31,12 @@ export const AuthProvider = ({ children }) => {
       const authData = await authService.login(data);
 
       setAuthData(authData);
-      await AsyncStorage.setItem("@AuthData", JSON.stringify(authData.token));
+      await AsyncStorage.setItem("@AuthData", JSON.stringify(authData));
     } catch (error) {
       Alert.alert(error.message, "Tente novamente");
     }
   };
 
-  // Função para fazer logout
   const signOut = async () => {
     setAuthData(undefined);
     await AsyncStorage.removeItem("@AuthData");

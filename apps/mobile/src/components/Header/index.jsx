@@ -3,11 +3,25 @@ import { styles } from "./styles";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar, Switch } from "react-native-paper";
+import { useUser } from "../../store/user.store";
+import userService from "../../services/user.service";
 
 const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
   const navigation = useNavigation();
+  const {userData, loadStorageData } = useUser();
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = async () => {
+    setIsSwitchOn(!isSwitchOn);
+    try {
+      const obj = {
+        isActive: !isSwitchOn,
+      };
+      await userService.updateIsActive(userData?.uuid, obj);
+      await loadStorageData();
+    } catch (err) {
+      setIsSwitchOn(!isSwitchOn);
+    }
+  };
 
   const goToProfile = () => {
     navigation.navigate("Perfil");
@@ -23,7 +37,7 @@ const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
               icon="camera"
               style={{ backgroundColor: "green" }}
             />
-            <Text style={styles.profileText}>João da Silva</Text>
+            <Text style={styles.profileText}>{userData?.name}</Text>
           </View>
         </TouchableOpacity>
         {delivery && (

@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { DeliverymanService } from './deliveryman.service';
-import { UpdateDeliveryManDto } from './dto/update-deliveryman.dto';
 import { CreateDeliveryManDto } from './dto/create-deliveryman.dto';
+import { UpdateAvailabilityDto } from './dto/update-availability.dto';
 
 @Controller('deliveryman')
 export class DeliveryManController {
@@ -30,12 +30,20 @@ export class DeliveryManController {
     return this.deliverymanService.findOne(uuid);
   }
 
-  @Patch(':uuid')
-  update(
+  @Get('/username/:username')
+  findDeliveryByUsername(@Param('username') username: string) {
+    return this.deliverymanService.findDeliveryByUsername(username);
+  }
+
+  @Patch('/availability/:uuid')
+  updateAvailability(
     @Param('uuid') uuid: string,
-    @Body() updateDeliveryManDto: UpdateDeliveryManDto,
+    @Body() updateAvailabilityDto: UpdateAvailabilityDto,
   ) {
-    return this.deliverymanService.update(uuid, updateDeliveryManDto);
+    return this.deliverymanService.updateAvailability(
+      uuid,
+      updateAvailabilityDto.isActive,
+    );
   }
 
   @Delete(':uuid')

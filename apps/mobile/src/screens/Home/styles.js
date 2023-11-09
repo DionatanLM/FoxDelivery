@@ -4,13 +4,16 @@ import { THEME } from "../../theme";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
-    paddingTop: 60,
+
     backgroundColor: "#E2E2E2",
+    zIndex: 2,
+  },
+  padding: {
+    padding: 25,
   },
 
   backgroundOrange: {
-    width: "120%",
+    width: "150%",
     height: 550,
     backgroundColor: "#F58328",
     position: "absolute",
@@ -63,11 +66,17 @@ export const styles = StyleSheet.create({
   },
   tabStatus: {
     display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#E6E6E6",
-    marginBottom: 5,
+    //marginBottom: 5,
+    height: 30,
+    gap: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
+
   activityBalanceContainer: {
     display: "flex",
     flexDirection: "row",

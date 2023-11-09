@@ -9,9 +9,6 @@ import { useSession } from 'next-auth/react';
 import OrderSection from './sections/OrderSection';
 
 const HomePage = ({ userStore }) => {
-  const session = useSession();
-  const { data } = session;
-
   return (
     <Container
       fluid

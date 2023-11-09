@@ -24,7 +24,6 @@ export class AuthService {
   public async login(body: LoginDto): Promise<ResponseLoginDto | never> {
     const { username, password }: LoginDto = body;
     let user = await this.userService.findOneByUsername(username);
-    console.log(user);
     if (!user) {
       user = await this.userService.findOneByCpfCnpj(username);
     }
@@ -35,7 +34,10 @@ export class AuthService {
 
     const token = await this.checkUserAndGenToken(user, password);
     await this.userService.insertLastAccess(user);
-    return { token, user };
+    return {
+      token,
+      user: { uuid: user.uuid, name: user.name, username: user.username },
+    } as ResponseLoginDto;
   }
 
   private async checkUserAndGenToken(user: User, password: string) {

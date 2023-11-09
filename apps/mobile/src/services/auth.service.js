@@ -2,32 +2,36 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const USER_KEY = "@AuthData";
-const BASE_API_URL = "http://192.168.15.154:8080";
+const BASE_API_URL = process.env.API_URL;
 
 const login = async (data) => {
+  console.log(data);
   try {
+    if (!data.username || !data.password) {
+      throw new Error("Email e senha são obrigatórios");
+    }
+
     const response = await axios.post(`${BASE_API_URL}/auth/login`, data, {
       headers: {
         "public-request": "true",
       },
     });
 
+    if (!response.data.token) {
+      throw new Error("Token não encontrado na resposta do servidor");
+    }
+
+    console.log(response)
+    await AsyncStorage.setItem(USER_KEY, response.data.token);
+
     return response.data;
   } catch (error) {
-    throw error; // Você pode tratar ou personalizar a manipulação de erros conforme necessário
+    console.error(error);
+    throw new Error(
+      "Não foi possível fazer login. Verifique suas credenciais e tente novamente."
+    );
   }
 };
-
-// const login = async (data) => {
-//   axios
-//     .post(`${BASE_API_URL}/auth/login`, data)
-//     .then((response) => {
-//       return response.data.token;
-//     })
-//     .catch((error) => {
-//       console.error("Erro na requisição:", error);
-//     });
-// };
 
 // Função para fazer logout
 const logout = async () => {

@@ -16,6 +16,7 @@ import { Loading } from "./src/components/Loading";
 import { Routes } from "./src/routes/index";
 import { AuthProvider } from "./src/store/auth.store";
 import { PaperProvider } from "react-native-paper";
+import { UserProvider } from "./src/store/user.store";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -32,16 +33,18 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <PaperProvider>
-        <Background>
-          <StatusBar
-            barStyle="light-content"
-            backgroundColor="transparent"
-            translucent
-          />
-          {fontsLoaded ? <Routes /> : <Loading />}
-        </Background>
-      </PaperProvider>
+      <UserProvider>
+        <PaperProvider>
+          <Background>
+            <StatusBar
+              barStyle="light-content"
+              backgroundColor="transparent"
+              translucent
+            />
+            {fontsLoaded ? <Routes /> : <Loading />}
+          </Background>
+        </PaperProvider>
+      </UserProvider>
     </AuthProvider>
   );
 }

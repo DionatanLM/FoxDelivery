@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -55,6 +54,15 @@ export class Deliveryman {
   })
   @JoinColumn([{ name: 'id_city', referencedColumnName: 'id' }])
   city: City;
+
+  @Column({ name: 'lat', length: 100 })
+  lat: string;
+
+  @Column({ name: 'lng', length: 100 })
+  lng: string;
+
+  @Column('boolean', { name: 'is_active' })
+  isActive: boolean;
 
   @Column({ nullable: true })
   createdAt: Date;

@@ -83,9 +83,6 @@ export class Order {
   @Column('int', { name: 'rating' })
   rating: number;
 
-  @Column('boolean', { name: 'created_by_store', default: 0 })
-  createByStore: number;
-
   @Column('boolean', { name: 'accepted_by_deliveryman', default: 0 })
   acceptedByDeliveryman: number;
 

@@ -2,15 +2,34 @@ import React, { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { Image, TouchableOpacity, View } from "react-native";
-import { Text, Appbar, Button, Avatar, TextInput } from "react-native-paper";
+import { Text, Appbar, Button, TextInput } from "react-native-paper";
 import { useAuth } from "../../store/auth.store";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
+import { useUser } from "../../store/user.store";
 
 const ProfilePage = () => {
   const { signOut } = useAuth();
+  const { userData } = useUser();
   const navigation = useNavigation();
+
+  const [name, setName] = useState(userData?.name);
+  const [phone, setPhone] = useState(userData?.cellphone);
+  const [email, setEmail] = useState(userData?.email);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleNameChange = (text) => {
+    setName(text);
+  };
+
+  const handlePhoneChange = (text) => {
+    setPhone(text);
+  };
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+  };
+
 
   useEffect(() => {
     (async () => {
@@ -68,6 +87,8 @@ const ProfilePage = () => {
             style={styles.input}
             activeUnderlineColor="#F58328"
             underlineStyle={{ backgroundColor: "none" }}
+            value={name}
+            onChangeText={handleNameChange}
           />
 
           <TextInput
@@ -75,6 +96,8 @@ const ProfilePage = () => {
             style={styles.input}
             activeUnderlineColor="#F58328"
             underlineStyle={{ backgroundColor: "none" }}
+            value={phone}
+            onChangeText={handlePhoneChange}
           />
 
           <TextInput
@@ -82,6 +105,8 @@ const ProfilePage = () => {
             style={styles.input}
             activeUnderlineColor="#F58328"
             underlineStyle={{ backgroundColor: "none" }}
+            value={email}
+            onChangeText={handleEmailChange}
           />
           <TextInput
             label="CPF"
@@ -89,6 +114,7 @@ const ProfilePage = () => {
             style={styles.input}
             activeUnderlineColor="#F58328"
             underlineStyle={{ backgroundColor: "none" }}
+            value={userData?.cpf}
           />
 
           <Button

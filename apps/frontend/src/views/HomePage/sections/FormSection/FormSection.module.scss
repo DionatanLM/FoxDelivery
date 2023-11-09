@@ -88,3 +88,18 @@
   margin-bottom: 0;
   color: red;
 }
+
+.customAlert {
+  animation: alert-fade-in 0.5s ease-in-out;
+
+  @keyframes alert-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import styles from './MapSection.module.scss';
 import { GoogleApiWrapper, Map, Marker } from 'google-maps-react';
-import io from 'socket.io-client';
-import { getSession, useSession } from 'next-auth/react';
+import socketIOClient from 'socket.io-client';
+import { useSession } from 'next-auth/react';
 import { useOrder } from '@/stores/order.store';
-import MarkerOrder from '@/components/MarkerOrder';
+import { ORDER_STATUS, ORDER_STATUS_STYLES_ALT } from '@/constants/order.constants';
+
 const mapStyle = [
   {
     featureType: 'all',
@@ -25,25 +26,35 @@ const mapStyle = [
 const MapSection = ({ userStore }) => {
   const { data: sessionData } = useSession();
   const { orders, findOrderByUserStore } = useOrder();
+  const [locationDelivery, setLocationDelivery] = useState(null);
+  const socket = socketIOClient(process.env.NEXT_PUBLIC_API_URL);
+
   useEffect(() => {
     findOrderByUserStore(userStore?.uuid);
   }, [findOrderByUserStore]);
 
-  const socket = io('http://localhost:8080');
-
   useEffect(() => {
-    socket.on('message', () => {
-      console.log('connectedddd');
+    socket.on('locationDelivery', data => {
+      if (data) {
+        if (
+          locationDelivery &&
+          data?.latitude === locationDelivery?.latitude &&
+          data?.longitude === locationDelivery?.longitude
+        ) {
+          return;
+        }
+        setLocationDelivery(data);
+      }
     });
-  }, []);
+  }, [socket, locationDelivery]);
 
-  function createCustomMarkerIcon(orderNumber) {
+  function createCustomMarkerIcon(orderNumber, style) {
     const canvas = document.createElement('canvas');
     canvas.width = 40;
     canvas.height = 40;
 
     const context = canvas.getContext('2d');
-    context.fillStyle = '#F58328';
+    context.fillStyle = style.background;
     context.arc(20, 20, 20, 0, 2 * Math.PI);
     context.fill();
     context.fillStyle = 'white';
@@ -58,7 +69,6 @@ const MapSection = ({ userStore }) => {
     };
   }
 
-  //console.log(orders.map(order => order.latLngAddress));
   return (
     <Container
       fluid
@@ -85,17 +95,34 @@ const MapSection = ({ userStore }) => {
         />
         {orders.map((order, index) => {
           const latLng = JSON.parse(order.latLngAddress);
-          const latitude = latLng.lat;
-          const longitude = latLng.lng;
+          const latitude = latLng?.lat;
+          const longitude = latLng?.lng;
+
+          const status = ORDER_STATUS[order.status];
+          const cardClass = ORDER_STATUS_STYLES_ALT[status] || {};
           return (
             <Marker
               key={index}
               position={{ lat: latitude, lng: longitude }}
               title={`Número do pedido: ${order.orderNumber}`}
-              icon={createCustomMarkerIcon(order.orderNumber)}
+              icon={createCustomMarkerIcon(order.orderNumber, cardClass)}
             />
           );
         })}
+
+        {locationDelivery && (
+          <Marker
+            position={{
+              lat: locationDelivery?.latitude,
+              lng: locationDelivery?.longitude,
+            }}
+            title={`Entregador: ${locationDelivery?.id}`}
+            icon={{
+              url: 'img/helmetMarker.png',
+              scaledSize: new google.maps.Size(30, 30),
+            }}
+          />
+        )}
       </Map>
     </Container>
   );
