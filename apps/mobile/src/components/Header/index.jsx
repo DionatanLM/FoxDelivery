@@ -8,7 +8,7 @@ import userService from "../../services/user.service";
 
 const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
   const navigation = useNavigation();
-  const { userData } = useUser();
+  const {userData, loadStorageData } = useUser();
 
   const onToggleSwitch = async () => {
     setIsSwitchOn(!isSwitchOn);
@@ -17,6 +17,7 @@ const Header = ({ delivery, isSwitchOn, setIsSwitchOn }) => {
         isActive: !isSwitchOn,
       };
       await userService.updateIsActive(userData?.uuid, obj);
+      await loadStorageData();
     } catch (err) {
       setIsSwitchOn(!isSwitchOn);
     }

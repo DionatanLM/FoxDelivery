@@ -13,9 +13,9 @@ const ProfilePage = () => {
   const { userData } = useUser();
   const navigation = useNavigation();
 
-  const [name, setName] = useState(userData.name);
-  const [phone, setPhone] = useState(userData.cellphone);
-  const [email, setEmail] = useState(userData.email);
+  const [name, setName] = useState(userData?.name);
+  const [phone, setPhone] = useState(userData?.cellphone);
+  const [email, setEmail] = useState(userData?.email);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleNameChange = (text) => {
@@ -114,7 +114,7 @@ const ProfilePage = () => {
             style={styles.input}
             activeUnderlineColor="#F58328"
             underlineStyle={{ backgroundColor: "none" }}
-            value={userData.cpf}
+            value={userData?.cpf}
           />
 
           <Button

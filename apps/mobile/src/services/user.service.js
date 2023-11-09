@@ -31,7 +31,7 @@ const updateIsActive = async (id, data) => {
 
 const userService = {
   getUser,
-  updateIsActive
+  updateIsActive,
 };
 
 export default userService;

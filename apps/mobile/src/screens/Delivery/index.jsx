@@ -22,7 +22,7 @@ const DeliveryPage = () => {
     reconnection: true,
     reconnectionAttempts: Infinity,
   });
-  console.log(isSwitchOn)
+
   const hideDialog = () => setShowOrderModal(false);
 
   const handleAcceptOrder = () => {

@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Função para fazer logout
   const signOut = async () => {
     setAuthData(undefined);
     await AsyncStorage.removeItem("@AuthData");

@@ -1,10 +1,9 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import {
   API_KEY,
   DELIVERYMAN_REPOSITORY,
-  DELIVERYMAN_SOCKETS,
   ORDER_REPOSITORY,
   STORE_REPOSITORY,
 } from 'src/config/constants/providers';
@@ -12,7 +11,6 @@ import { Order } from 'src/entities/Order.entity';
 import { Repository } from 'typeorm';
 import { Store } from 'src/entities/Store.entity';
 import { Deliveryman } from 'src/entities/Deliveryman.entity';
-import { Server } from 'socket.io';
 import { ORDER_STATUS } from 'src/config/constants/order-status.enum';
 import { OrderGateway } from './order.gateway';
 import axios from 'axios';
@@ -26,18 +24,9 @@ export class OrderService {
     private storeRepository: Repository<Store>,
     @Inject(DELIVERYMAN_REPOSITORY)
     private deliverymanRepository: Repository<Deliveryman>,
-    @Inject(DELIVERYMAN_SOCKETS)
-    private readonly socketServer: Server,
     private readonly orderGateway: OrderGateway,
     @Inject(API_KEY) private readonly apiKey: string,
   ) {}
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
-  }
-
-  findAll() {
-    return `This action returns all order`;
-  }
 
   async findOrderByUserStoreUuid(storeUuid: string) {
     const orderByStore = await this.orderRepository.find({
@@ -65,59 +54,96 @@ export class OrderService {
       throw new HttpException('Já existe um pedido com esse número', 404);
     }
 
-    const closestDeliveryman = await this.findDeliveryForOrder(
-      createOrderDto.storeUuid,
-    );
-    console.log(closestDeliveryman);
     const calculateDistanceByStore = await this.calculateDistanceFromStore(
       createOrderDto.storeUuid,
       createOrderDto.latLngAddress,
     );
 
-    if (closestDeliveryman) {
-      const newOrder = Object.assign(new Order(), {
-        orderNumber: createOrderDto.orderNumber,
-        storeUuid: createOrderDto.storeUuid,
-        clientName: createOrderDto.clientName,
-        price: createOrderDto.price,
-        typePayment: createOrderDto.typePayment,
-        address: createOrderDto.address,
-        latLngAddress: createOrderDto.latLngAddress,
-        status: ORDER_STATUS.PENDING,
-        acceptedByDeliveryman: 0,
-        totalDistance: calculateDistanceByStore,
+    const newOrder = Object.assign(new Order(), {
+      orderNumber: createOrderDto.orderNumber,
+      storeUuid: createOrderDto.storeUuid,
+      clientName: createOrderDto.clientName,
+      price: createOrderDto.price,
+      typePayment: createOrderDto.typePayment,
+      address: createOrderDto.address,
+      latLngAddress: createOrderDto.latLngAddress,
+      status: ORDER_STATUS.PENDING,
+      acceptedByDeliveryman: 0,
+      totalDistance: calculateDistanceByStore,
+    });
+    await this.orderRepository.save([newOrder]);
+
+    const maxAttempts = 5;
+    let attempt = 0;
+    let accepted = false;
+    const attemptedDeliverymen = [];
+
+    while (attempt < maxAttempts && !accepted) {
+      let activeDeliverymen = await this.deliverymanRepository.find({
+        where: { isActive: true },
       });
-      await this.orderRepository.save([newOrder]);
+      const availableDeliverymen = activeDeliverymen.filter(
+        (dm) => !attemptedDeliverymen.includes(dm.uuid),
+      );
 
-      const deliverymanSocketId =
-        await this.orderGateway.deliverymanSocketsMap.get(
-          closestDeliveryman.uuid,
-        );
+      if (availableDeliverymen.length === 0) {
+        // Se não houver entregadores disponíveis, saia do loop
+        break;
+      }
+      const closestDeliveryman = await this.findDeliveryForOrder(
+        createOrderDto.storeUuid,
+        availableDeliverymen,
+      );
 
-      if (deliverymanSocketId) {
-        // Emitir um evento socket.io apenas para o entregador mais próximo
-        await this.orderGateway.handleNewOrder(deliverymanSocketId, newOrder);
-
-        try {
-          const result = await this.waitForDeliverymanResponse(
-            deliverymanSocketId,
-            newOrder.uuid,
+      console.log(closestDeliveryman);
+      if (closestDeliveryman) {
+        const deliverymanSocketId =
+          await this.orderGateway.deliverymanSocketsMap.get(
+            closestDeliveryman.uuid,
           );
 
-          // Atualizar o pedido com base na resposta do entregador
-          if ((result as { response?: string }).response === 'accept') {
-            console.log('entregador aceitou o pedido');
-            newOrder.status = ORDER_STATUS.RECEIVED;
-            newOrder.acceptedByDeliveryman = 1;
-            newOrder.deliverymanUuid = closestDeliveryman.uuid;
-            await this.orderRepository.save(newOrder);
-          } else {
-            // implementar logica para caso entregar não aceitar
+        if (deliverymanSocketId) {
+          await this.orderGateway.handleNewOrder(deliverymanSocketId, newOrder);
+
+          try {
+            const result = await this.waitForDeliverymanResponse(
+              deliverymanSocketId,
+              newOrder.uuid,
+            );
+
+            if ((result as { response?: string }).response === 'accept') {
+              console.log('Entregador aceitou o pedido');
+              newOrder.status = ORDER_STATUS.RECEIVED;
+              newOrder.acceptedByDeliveryman = 1;
+              newOrder.deliverymanUuid = closestDeliveryman.uuid;
+              await this.orderRepository.save(newOrder);
+              accepted = true;
+            } else {
+              // Se o entregador recusou o pedido, remova-o da lista
+              // e tente atribuir ao próximo entregador disponível
+              activeDeliverymen = activeDeliverymen.filter(
+                (dm) => dm.uuid !== closestDeliveryman.uuid,
+              );
+            }
+          } catch {
+            // Se houve um erro ao aguardar a resposta, tente com o próximo entregador
+            attemptedDeliverymen.push(closestDeliveryman.uuid);
           }
-        } catch {
-          // implementar logica para caso entregar não responder
+        } else {
+          // Se o ID do socket do entregador não estiver disponível, tente com o próximo entregador
+          attemptedDeliverymen.push(closestDeliveryman.uuid);
         }
+      } else {
+        attemptedDeliverymen.push(closestDeliveryman.uuid);
       }
+      attempt++;
+    }
+
+    if (!accepted) {
+      throw new HttpException(
+        'Nenhum entregador disponível no momento.',
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
@@ -125,41 +151,39 @@ export class OrderService {
   async waitForDeliverymanResponse(deliverymanSocketId, orderUuid) {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
-        clearInterval(interval); // Cancela o intervalo, pois o tempo limite foi excedido
+        clearInterval(interval);
         reject(new Error('Tempo limite para resposta do entregador excedido'));
-      }, 60000); // Tempo limite de 60 segundos (ajuste conforme necessário)
+      }, 60000);
 
       const interval = setInterval(() => {
-        // VERIFICAR SE É O MESMO deliverymanSocketId e o mesmo orderUuid
-
         if (
           this.orderGateway.responsePromises[deliverymanSocketId] &&
           this.orderGateway.responsePromises[deliverymanSocketId].orderUuid ===
             orderUuid
         ) {
-          clearTimeout(timeout); // Cancela o timeout, pois a resposta foi recebida
+          clearTimeout(timeout);
           const response =
             this.orderGateway.responsePromises[deliverymanSocketId];
-          resolve(response); // Resolve a Promise com os dados da resposta do entregador
-          clearInterval(interval); // Cancela o intervalo, pois a resposta foi recebida
+          resolve(response);
+          clearInterval(interval);
         }
-      }, 1000); // Intervalo de verificação a cada segundo (ajuste conforme necessário)
+      }, 1000);
     });
   }
 
   // função para encontrar o entregador mais próximo da loja
-  async findDeliveryForOrder(storeUuid: string) {
+  async findDeliveryForOrder(
+    storeUuid: string,
+    availableDeliverymen: Deliveryman[] = [],
+  ) {
     const store = await this.storeRepository.findOne({
       where: { uuid: storeUuid },
-    });
-    const activeDeliverymen = await this.deliverymanRepository.find({
-      where: { isActive: true },
     });
 
     let closestDeliveryman: Deliveryman | null = null;
     let shortestDistance = Infinity;
 
-    for (const deliveryman of activeDeliverymen) {
+    for (const deliveryman of availableDeliverymen) {
       const distance = await this.calculateDistance(
         store.lat,
         store.lng,
@@ -167,8 +191,8 @@ export class OrderService {
         deliveryman.lng,
       );
 
-      if ((await distance) < shortestDistance) {
-        shortestDistance = await distance;
+      if (distance < shortestDistance) {
+        shortestDistance = distance;
         closestDeliveryman = deliveryman;
       }
     }
@@ -231,12 +255,11 @@ export class OrderService {
       throw new Error('Loja não encontrada');
     }
 
-    // Parse das coordenadas de destino do formato JSON
     const destinationCoords = JSON.parse(latLngEnd);
     const destinationLat = destinationCoords.lat;
     const destinationLng = destinationCoords.lng;
 
-    // Use a função calculateDistance para calcular a distância
+    // calculateDistance para calcular a distância
     const distance = await this.calculateDistance(
       store.lat,
       store.lng,
@@ -245,13 +268,5 @@ export class OrderService {
     );
 
     return distance;
-  }
-
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
   }
 }
